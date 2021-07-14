@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Release\**" />
+    <Compile Remove="Utils\**" />
+    <EmbeddedResource Remove="Release\**" />
+    <EmbeddedResource Remove="Utils\**" />
+    <None Remove="Release\**" />
+    <None Remove="Utils\**" />
+  </ItemGroup>
+
+</Project>
