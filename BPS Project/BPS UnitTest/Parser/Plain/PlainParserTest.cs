@@ -6,10 +6,10 @@ using System.Collections.Generic;
 namespace BPS_UnitTest.Parser.Plain
 {
 	[TestClass]
-	class PlainParserTest
+	public class PlainParserTest
 	{
 		[TestMethod]
-		public void Parse()
+		public void ParseTest()
 		{
 			// Arrange
 			string plain =
@@ -30,11 +30,11 @@ namespace BPS_UnitTest.Parser.Plain
 				{ "float", 0.5 },
 				{ "boolTrue", true },
 				{ "boolFalse", false },
-				{ "stringArr", new List<string> { "yes", "no", "maybe" } },
-				{ "intArr", new List<int> { 0, 1, 2, 10, -5 } },
-				{ "floatArr", new List<float> { 0.9f, 1.7f, 0.2f, 1.06f, -5.618f } },
-				{ "boolArr", new List<bool> { true, false, true } },
-				{ "multArr2", new List<List<int>> { new List<int> { 0, 1, 2 }, new List<int> { 0, 1, 2 }, new List<int> { 0, 1, 2 } } }
+				{ "stringArr", new List<object> { "yes", "no", "maybe" } },
+				{ "intArr", new List<object> { 0, 1, 2, 10, -5 } },
+				{ "floatArr", new List<object> { 0.9f, 1.7f, 0.2f, 1.06f, -5.618f } },
+				{ "boolArr", new List<object> { true, false, true } },
+				{ "multArr2", new List<object> { new List<object> { 0, 1, 2 }, new List<object> { 0, 1, 2 }, new List<object> { 0, 1, 2 } } }
 			};
 			PlainParser parser = new PlainParser(file);
 

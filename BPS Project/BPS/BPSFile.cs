@@ -173,6 +173,26 @@ namespace BPSLib
             return false;
 		}
 
+		public override bool Equals(object obj)
+		{
+			if ((obj == null) || !GetType().Equals(obj.GetType()))
+			{
+				return false;
+			}
+			else
+			{
+				BPSFile file = (BPSFile)obj;
+				foreach (var d in _data)
+				{
+					if (!file.Contains(d.Key))
+					{
+						return false;
+					}
+				}
+				return _data.Count == file.Count();
+			}
+		}
+
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
 		{
 			return ((IEnumerable<KeyValuePair<string, object>>)_data).GetEnumerator();
