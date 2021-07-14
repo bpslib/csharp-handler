@@ -51,14 +51,14 @@
   <ItemGroup>
     <Compile Include="Parser\File\FileLexerTest.cs" />
     <Compile Include="BPSFileTest.cs" />
+    <Compile Include="Parser\File\FileParserTest.cs" />
+    <Compile Include="Parser\Plain\PlainParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parser\Plain\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BPS\BPS.csproj">
       <Project>{92bd51d3-681b-48a3-a186-c5db05968b1c}</Project>

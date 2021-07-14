@@ -4,7 +4,7 @@ using BPSLib;
 namespace BPS_UnitTest.Parser.File
 {
 	[TestClass]
-	public class FileLexerTest
+	class FileParserTest
 	{
 		[TestMethod]
 		public void Test()

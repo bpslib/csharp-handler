@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BPSLib;
 
 namespace BPS_UnitTest
@@ -30,10 +29,11 @@ namespace BPS_UnitTest
 			// Act
 			file.Add("key", "value");
 			file.Add("key2", "value2");
-			file.Clear();
 
 			// Assert
 			Assert.IsTrue(file.Contains("key2"));
+			file.Clear();
+			Assert.IsFalse(file.Contains("key"));
 		}
 
 		[TestMethod]

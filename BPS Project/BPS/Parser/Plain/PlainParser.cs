@@ -5,9 +5,11 @@
  *
  */
 
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Globalization;
 
+[assembly: InternalsVisibleTo("BPS UnitTest")]
 namespace BPSLib.Parser.Plain
 {
 	/// <summary>
@@ -97,6 +99,10 @@ namespace BPSLib.Parser.Plain
 				if (value.GetType().Equals(typeof(string)))
 				{
 					Plain += "'" + value + "'";
+				}
+				else if (value.GetType().Equals(typeof(bool)))
+				{
+					Plain += value.ToString().ToLower();
 				}
 				else
 				{
