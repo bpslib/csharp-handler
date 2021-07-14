@@ -78,7 +78,7 @@ namespace BPSLib
 				_data.Add(new KeyValuePair<string, object>(key, value));
 				return true;
 			}
-			return true;
+			return false;
 		}
 
         public bool Existis(string key)
