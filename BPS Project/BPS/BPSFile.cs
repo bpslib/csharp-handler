@@ -61,16 +61,30 @@ namespace BPSLib
 			BPS.Save(this, path);
 		}
 
+		/// <summary>
+		/// Parses a plain string data and overwrites self.
+		/// </summary>
+		/// <param name="data">a data in string format.</param>
 		public void Parse(string data)
 		{
 			_data = BPS.Parse(data)._data;
 		}
 
+		/// <summary>
+		/// Converts self data to plain text.
+		/// </summary>
+		/// <returns>A String representation from self data.</returns>
 		public string Plain()
 		{
 			return BPS.Plain(this);
 		}
 
+		/// <summary>
+		/// Adds a value in passed key.
+		/// </summary>
+		/// <param name="key">the key to represents the value.</param>
+		/// <param name="value">the value to store.</param>
+		/// <returns>True if it was successful.</returns>
 		public bool Add(string key, object value)
 		{
             if (!Existis(key))
@@ -81,7 +95,30 @@ namespace BPSLib
 			return false;
 		}
 
-        public bool Existis(string key)
+		/// <summary>
+		/// Removes a value from passed key.
+		/// </summary>
+		/// <param name="key">the key to remove.</param>
+		/// <returns>True if was successful.</returns>
+		public bool Remove(string key)
+		{
+			foreach (var d in _data)
+			{
+				if (d.Key.Equals(key))
+				{
+					_data.Remove(d);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Verifies if a value existis from the passed key.
+		/// </summary>
+		/// <param name="key">the key from value.</param>
+		/// <returns>True if exists.</returns>
+		public bool Existis(string key)
 		{
             foreach (var d in _data)
 			{
@@ -93,10 +130,6 @@ namespace BPSLib
             return false;
 		}
 
-        #endregion Public
-
-        #region Private
-
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
 		{
 			return ((IEnumerable<KeyValuePair<string, object>>)_data).GetEnumerator();
@@ -106,6 +139,12 @@ namespace BPSLib
 		{
 			return ((IEnumerable)_data).GetEnumerator();
 		}
+
+		#endregion Public
+
+		#region Private
+
+
 
 		#endregion Private
 
