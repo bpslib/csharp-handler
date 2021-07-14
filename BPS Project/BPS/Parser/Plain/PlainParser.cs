@@ -5,28 +5,44 @@
  *
  */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 
 namespace BPSLib.Parser.Plain
 {
-	internal class Parser
+	/// <summary>
+	/// Class <c>PlainParser</c> manage the parser from BPSFile to string representation.
+	/// </summary>
+	internal class PlainParser
 	{
+		// TODO: do a constructor with no file needed
+
 		#region Vars
 
-		public BPSFile BPSFile { get; }
-		public string Plain { get; set; }
+		/// <summary>
+		/// Generated plain text.
+		/// </summary>
+		internal string Plain { get; private set; }
+
+		/// <summary>
+		/// To parse file.
+		/// </summary>
+		internal BPSFile BPSFile { get; set; }
 
 		#endregion Vars
 
 
 		#region Constructors
 
-		internal Parser(BPSFile file)
+		/// <summary>
+		/// Default contructor.
+		/// </summary>
+		/// <param name="file">To parse BPSFile file.</param>
+		internal PlainParser(BPSFile file)
 		{
 			BPSFile = file;
 			Plain = "";
+
 			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
 		}
 
@@ -37,6 +53,9 @@ namespace BPSLib.Parser.Plain
 
 		#region Public
 
+		/// <summary>
+		/// Do the parser.
+		/// </summary>
 		internal void Parse()
 		{
 			foreach (var d in BPSFile)
@@ -52,6 +71,10 @@ namespace BPSLib.Parser.Plain
 
 		#region Private
 
+		/// <summary>
+		/// Parse a value.
+		/// </summary>
+		/// <param name="value">the value to be parsed.</param>
 		private void ParseValue(object value)
 		{
 			if (value.GetType().Equals(typeof(List<object>)))
@@ -73,6 +96,10 @@ namespace BPSLib.Parser.Plain
 			}
 		}
 
+		/// <summary>
+		/// Parse an array value.
+		/// </summary>
+		/// <param name="value">the array value to be parsed.</param>
 		private void ParseArray(object value)
 		{
 			foreach (var v in (List<object>)value)

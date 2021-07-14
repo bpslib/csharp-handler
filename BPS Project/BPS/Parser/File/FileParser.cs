@@ -11,27 +11,45 @@ using System.Globalization;
 
 namespace BPSLib.Parser.File
 {
-	internal class Parser
+	/// <summary>
+	/// Class <c>FileParser</c> manages the file parser.
+	/// </summary>
+	internal class FileParser
 	{
-		internal BPSFile BPSFile;
+		// TODO: do a constructor with no input needed
 
-		private readonly string input;
-		private List<Token> tokens;
-		private Token curToken;
-		private int curIndex = -1;
+		/// <summary>
+		/// Generated BPSFile.
+		/// </summary>
+		internal BPSFile BPSFile { get; }
+
+		/// <summary>
+		/// To parse input.
+		/// </summary>
+		internal string Input { get; private set; }
+
+		// control vars
+		private List<Token> _tokens;
+		private Token _curToken;
+		private int _curIndex = -1;
 
 		private string key;
 		private Stack<List<object>> arrStack;
-		private const int STATE = 0;
-		private const int ARRAY = 1;
-		private int context = STATE;
+
+		private const int CONTEXT_KEY = 0;
+		private const int CONSTEXT_ARRAY = 1;
+		private int context = CONTEXT_KEY;
 
 		#region Constructors
 
-		internal Parser(string input)
+		/// <summary>
+		/// Constructor setting the input.
+		/// </summary>
+		/// <param name="input">the input to be parsed.</param>
+		internal FileParser(string input)
 		{
 			BPSFile = new BPSFile();
-			this.input = input;
+			Input = input;
 			arrStack = new Stack<List<object>>();
 
 			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
@@ -44,11 +62,14 @@ namespace BPSLib.Parser.File
 
 		#region Public
 
+		/// <summary>
+		/// Do the file parser.
+		/// </summary>
 		internal void Parse()
 		{
-			var lexer = new Lexer(input);
+			var lexer = new FileLexer(Input);
 			lexer.Parse();
-			tokens = lexer.Tokens;
+			_tokens = lexer.Tokens;
 			Start();
 		}
 
@@ -65,10 +86,10 @@ namespace BPSLib.Parser.File
 		private void Key()
 		{
 			NextToken();
-			switch (curToken.Category)
+			switch (_curToken.Category)
 			{
 				case TokenCategory.KEY:
-					key = curToken.Image;
+					key = _curToken.Image;
 					Value();
 					Key();
 					break;
@@ -80,7 +101,7 @@ namespace BPSLib.Parser.File
 		private void Value()
 		{
 			NextToken();
-			switch (curToken.Category)
+			switch (_curToken.Category)
 			{
 				case TokenCategory.OPEN_ARRAY:
 					OpenArray();
@@ -90,8 +111,8 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.STRING:
 					{
-						var value = curToken.Image.Substring(1, curToken.Image.Length - 2);
-						if (context == ARRAY)
+						var value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
+						if (context == CONSTEXT_ARRAY)
 						{
 							arrStack.Peek().Add(value);
 							Value();
@@ -104,8 +125,8 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.INTEGER:
 					{
-						var value = int.Parse(curToken.Image);
-						if (context == ARRAY)
+						var value = int.Parse(_curToken.Image);
+						if (context == CONSTEXT_ARRAY)
 						{
 							arrStack.Peek().Add(value);
 							Value();
@@ -118,8 +139,8 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.FLOAT:
 					{
-						var value = float.Parse(curToken.Image);
-						if (context == ARRAY)
+						var value = float.Parse(_curToken.Image);
+						if (context == CONSTEXT_ARRAY)
 						{
 							arrStack.Peek().Add(value);
 							Value();
@@ -132,7 +153,7 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.TRUE:
 					{
-						if (context == ARRAY)
+						if (context == CONSTEXT_ARRAY)
 						{
 							arrStack.Peek().Add(true);
 							Value();
@@ -145,7 +166,7 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.FALSE:
 					{
-						if (context == ARRAY)
+						if (context == CONSTEXT_ARRAY)
 						{
 							arrStack.Peek().Add(false);
 							Value();
@@ -157,7 +178,7 @@ namespace BPSLib.Parser.File
 					}
 					break;
 				default:
-					throw new Exception("Invalid token '" + curToken.Image + "' encountered.");
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
 			}
 		}
 
@@ -165,7 +186,7 @@ namespace BPSLib.Parser.File
 		{
 			if (arrStack.Count == 0)
 			{
-				context = ARRAY;
+				context = CONSTEXT_ARRAY;
 				arrStack.Push(new List<object>());
 			}
 			else
@@ -186,24 +207,24 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				context = STATE;
+				context = CONTEXT_KEY;
 				BPSFile.Add(key, arrStack.Pop());
 			}
 		}
 
 		private void NextToken()
 		{
-			if (++curIndex < tokens.Count)
+			if (++_curIndex < _tokens.Count)
 			{
-				curToken = tokens[curIndex];
+				_curToken = _tokens[_curIndex];
 			}
 		}
 
 		private void ConsumeToken(TokenCategory category)
 		{
-			if (!curToken.Category.Equals(category))
+			if (!_curToken.Category.Equals(category))
 			{
-				throw new Exception("Invalid token '" + curToken.Image + "' encountered.");
+				throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
 			}
 			NextToken();
 		}

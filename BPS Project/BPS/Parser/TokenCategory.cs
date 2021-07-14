@@ -7,6 +7,9 @@
 
 namespace BPSLib.Parser
 {
+	/// <summary>
+	/// Enum <e>TokenCategory</e> contains all token categories.
+	/// </summary>
 	internal enum TokenCategory : ushort
 	{
 		EOF = 0,

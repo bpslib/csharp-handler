@@ -10,10 +10,16 @@ using System.Collections.Generic;
 
 namespace BPSLib
 {
+	/// <summary>
+	/// Class <c>BPSFile</c> represents a BPS data document.
+	/// </summary>
     public class BPSFile : IEnumerable<KeyValuePair<string, object>>
 	{
         #region Vars
 
+		/// <summary>
+		/// Internal data structure.
+		/// </summary>
         internal List<KeyValuePair<string, object>> _data;
 
         #endregion Vars
@@ -29,7 +35,11 @@ namespace BPSLib
             _data = new List<KeyValuePair<string, object>>();
         }
 
-        public BPSFile(List<KeyValuePair<string, object>> data)
+		/// <summary>
+		/// Internal constructor to init with data.
+		/// </summary>
+		/// <param name="data">The initialization data.</param>
+        internal BPSFile(List<KeyValuePair<string, object>> data)
         {
             _data = data;
         }
@@ -41,12 +51,11 @@ namespace BPSLib
 
 		#region Public
 
-
 		/// <summary>
 		/// Read a BPS file from path.
 		/// </summary>
-		/// <param name="path">File path with or not extension</param>
-		/// <returns>Readed file</returns>
+		/// <param name="path">file path with or not extension.</param>
+		/// <returns>Readed file.</returns>
 		public void Load(string path)
 		{
 			_data = BPS.Load(path)._data;
@@ -62,16 +71,16 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Parses a plain string data and overwrites self.
+		/// Parse a plain string data and overwrites self.
 		/// </summary>
-		/// <param name="data">a data in string format.</param>
+		/// <param name="data">data in string format.</param>
 		public void Parse(string data)
 		{
 			_data = BPS.Parse(data)._data;
 		}
 
 		/// <summary>
-		/// Converts self data to plain text.
+		/// Convert self data to plain text.
 		/// </summary>
 		/// <returns>A String representation from self data.</returns>
 		public string Plain()
@@ -80,7 +89,7 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Adds a value in passed key.
+		/// Add a value in passed key.
 		/// </summary>
 		/// <param name="key">the key to represents the value.</param>
 		/// <param name="value">the value to store.</param>
@@ -96,7 +105,7 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Removes a value from passed key.
+		/// Remove a value from passed key.
 		/// </summary>
 		/// <param name="key">the key to remove.</param>
 		/// <returns>True if was successful.</returns>
@@ -114,7 +123,7 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Verifies if a value existis from the passed key.
+		/// Verify if a value existis from the passed key.
 		/// </summary>
 		/// <param name="key">the key from value.</param>
 		/// <returns>True if exists.</returns>

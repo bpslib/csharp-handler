@@ -10,10 +10,16 @@ using System.IO;
 
 namespace BPSLib
 {
+	/// <summary>
+	/// Class <c>BPS</c> controls general BPSFile functions.
+	/// </summary>
     public class BPS
     {
         #region Constants
 
+		/// <summary>
+		/// Document file extension.
+		/// </summary>
         internal const string BPS_FILE_EXTENSION = ".bps";
 
         #endregion Constants
@@ -23,12 +29,11 @@ namespace BPSLib
 
 		#region Public
 
-
 		/// <summary>
-		/// Read a BPS file from path.
+		/// Reads a BPSFile from passed path.
 		/// </summary>
-		/// <param name="path">File path with or not extension</param>
-		/// <returns>Readed file</returns>
+		/// <param name="path">path with or no extension.</param>
+		/// <returns>BPSFile containing readed data.</returns>
 		public static BPSFile Load(string path)
 		{
 			string data;
@@ -48,16 +53,14 @@ namespace BPSLib
 		/// <summary>
 		/// Write a BPS file on path.
 		/// </summary>
-		/// <param name="file">The file to be write</param>
-		/// <param name="path">Save path with or not extension</param>
+		/// <param name="file">the file to be write.</param>
+		/// <param name="path">save path with or not extension.</param>
 		public static void Save(BPSFile file, string path)
 		{
 			try
 			{
 				var sw = new StreamWriter(NormalizePath(path));
-
-				sw.WriteLine(file.Plain());
-
+				sw.WriteLine(Plain(file));
 				sw.Close();
 			}
 			catch (Exception ex)
@@ -66,16 +69,26 @@ namespace BPSLib
 			}
 		}
 
+		/// <summary>
+		/// Parse a plain string data and return a BPSFile.
+		/// </summary>
+		/// <param name="data">a data in string format.</param>
+		/// <returns>BPSFile representation from data.</returns>
 		public static BPSFile Parse(string data)
 		{
-			var parser = new Parser.File.Parser(data.Replace("\r\n", "\n").Replace("\r", string.Empty));
+			var parser = new Parser.File.FileParser(data.Replace("\r\n", "\n").Replace("\r", string.Empty));
 			parser.Parse();
 			return parser.BPSFile;
 		}
 
+		/// <summary>
+		/// Convert a BPSFile data to plain text.
+		/// </summary>
+		/// <param name="file">BPSFile to convert.</param>
+		/// <returns>A String representation from self data.</returns>
 		public static string Plain(BPSFile file)
 		{
-			var parser = new Parser.Plain.Parser(file);
+			var parser = new Parser.Plain.PlainParser(file);
 			parser.Parse();
 			return parser.Plain;
 		}
@@ -87,7 +100,7 @@ namespace BPSLib
         /// <summary>
         /// Insert BPS extension on filename.
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">the path.</param>
         private static string NormalizePath(string path)
         {
             return path.EndsWith(BPS_FILE_EXTENSION) ? path : path + BPS_FILE_EXTENSION;
