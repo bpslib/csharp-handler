@@ -13,18 +13,19 @@ boolTrue:true;
 boolFalse:false;
 
 # Vector
-stringVector:["yes", 'no', "maybe"];
-intVector:[0, 1, 2, 10, -5];
-floatVector:[0.9, 1.7, 0.2, 1.06, -5.618];
-boolVector:[true, false, true];
+stringArr:["yes", 'no', "maybe"];
+intArr:[0, 1, 2, 10, -5];
+floatArr:[0.9, 1.7, 0.2, 1.06, -5.618];
+boolArr:[true, false, true];
 
 # Multdimensional array
-multArr:[
+multArr2:[
   [0, 1, 2],
   [0, 1, 2],
   [0, 1, 2]
 ];
 
+# And so on
 multArr3:[
   [
     [0, 1, 2],

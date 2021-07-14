@@ -96,7 +96,7 @@ namespace BPSLib
 		/// <returns>True if it was successful.</returns>
 		public bool Add(string key, object value)
 		{
-            if (!Existis(key))
+            if (!Contains(key))
 			{
 				_data.Add(new KeyValuePair<string, object>(key, value));
 				return true;
@@ -123,11 +123,45 @@ namespace BPSLib
 		}
 
 		/// <summary>
+		/// Search and return a value from key.
+		/// </summary>
+		/// <param name="key">the key to search.</param>
+		/// <returns>Encountered value.</returns>
+		public object Find(string key)
+		{
+			foreach (var d in _data)
+			{
+				if (d.Key.Equals(key))
+				{
+					return d.Value;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Count the elements from BPSFile.
+		/// </summary>
+		/// <returns>The element count.</returns>
+		public int Count()
+		{
+			return _data.Count;
+		}
+
+		/// <summary>
+		/// Remove all data.
+		/// </summary>
+		public void Clear()
+		{
+			_data.Clear();
+		}
+
+		/// <summary>
 		/// Verify if a value existis from the passed key.
 		/// </summary>
 		/// <param name="key">the key from value.</param>
 		/// <returns>True if exists.</returns>
-		public bool Existis(string key)
+		public bool Contains(string key)
 		{
             foreach (var d in _data)
 			{
