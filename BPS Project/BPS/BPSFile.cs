@@ -193,6 +193,11 @@ namespace BPSLib
 			}
 		}
 
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
 		{
 			return ((IEnumerable<KeyValuePair<string, object>>)_data).GetEnumerator();
