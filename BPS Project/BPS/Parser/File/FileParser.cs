@@ -110,75 +110,90 @@ namespace BPSLib.Parser.File
 					CloseArray();
 					break;
 				case TokenCategory.STRING:
-					{
-						var value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
-						if (context == CONSTEXT_ARRAY)
-						{
-							arrStack.Peek().Add(value);
-							Value();
-						}
-						else
-						{
-							BPSFile.Add(key, value);
-						}
-					}
+					String();
 					break;
 				case TokenCategory.INTEGER:
-					{
-						var value = int.Parse(_curToken.Image);
-						if (context == CONSTEXT_ARRAY)
-						{
-							arrStack.Peek().Add(value);
-							Value();
-						}
-						else
-						{
-							BPSFile.Add(key, value);
-						}
-					}
+					Integer();
 					break;
 				case TokenCategory.FLOAT:
-					{
-						var value = float.Parse(_curToken.Image);
-						if (context == CONSTEXT_ARRAY)
-						{
-							arrStack.Peek().Add(value);
-							Value();
-						}
-						else
-						{
-							BPSFile.Add(key, value);
-						}
-					}
+					Float();
 					break;
 				case TokenCategory.TRUE:
-					{
-						if (context == CONSTEXT_ARRAY)
-						{
-							arrStack.Peek().Add(true);
-							Value();
-						}
-						else
-						{
-							BPSFile.Add(key, true);
-						}
-					}
+					True();
 					break;
 				case TokenCategory.FALSE:
-					{
-						if (context == CONSTEXT_ARRAY)
-						{
-							arrStack.Peek().Add(false);
-							Value();
-						}
-						else
-						{
-							BPSFile.Add(key, false);
-						}
-					}
+					False();
 					break;
 				default:
 					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+			}
+		}
+
+		private void String()
+		{
+			var value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
+			if (context == CONSTEXT_ARRAY)
+			{
+				arrStack.Peek().Add(value);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(key, value);
+			}
+		}
+
+		private void Integer()
+		{
+			var value = int.Parse(_curToken.Image);
+			if (context == CONSTEXT_ARRAY)
+			{
+				arrStack.Peek().Add(value);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(key, value);
+			}
+		}
+
+		private void Float()
+		{
+			var value = float.Parse(_curToken.Image);
+			if (context == CONSTEXT_ARRAY)
+			{
+				arrStack.Peek().Add(value);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(key, value);
+			}
+		}
+
+		private void True()
+		{
+			if (context == CONSTEXT_ARRAY)
+			{
+				arrStack.Peek().Add(true);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(key, true);
+			}
+		}
+
+		private void False()
+		{
+			if (context == CONSTEXT_ARRAY)
+			{
+				arrStack.Peek().Add(false);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(key, false);
 			}
 		}
 
