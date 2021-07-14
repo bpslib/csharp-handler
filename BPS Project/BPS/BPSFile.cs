@@ -53,13 +53,12 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Write a BPS file on path.
+		/// Write self on passed path.
 		/// </summary>
-		/// <param name="file">The file to be write</param>
 		/// <param name="path">Save path with or not extension</param>
-		public void Save(BPS file, string path)
+		public void Save(string path)
 		{
-			
+			BPS.Save(this, path);
 		}
 
 		public void Parse(string data)
