@@ -16,8 +16,6 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class FileParser
 	{
-		// TODO: do a constructor with no input needed
-
 		/// <summary>
 		/// Generated BPSFile.
 		/// </summary>

@@ -15,8 +15,6 @@ namespace BPSLib.Parser.Plain
 	/// </summary>
 	internal class PlainParser
 	{
-		// TODO: do a constructor with no file needed
-
 		#region Vars
 
 		/// <summary>
@@ -37,7 +35,18 @@ namespace BPSLib.Parser.Plain
 		/// <summary>
 		/// Default contructor.
 		/// </summary>
-		/// <param name="file">To parse BPSFile file.</param>
+		internal PlainParser()
+		{
+			BPSFile = new BPSFile();
+			Plain = "";
+
+			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+		}
+
+		/// <summary>
+		/// Constructor init BPSFile.
+		/// </summary>
+		/// <param name="file">To be parsed BPSFile file.</param>
 		internal PlainParser(BPSFile file)
 		{
 			BPSFile = file;
