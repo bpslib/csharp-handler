@@ -33,14 +33,25 @@ namespace BPSLib.Parser.File
 		private Token _curToken;
 		private int _curIndex = -1;
 
-		private string key;
-		private Stack<List<object>> arrStack;
+		private string _key;
+		private readonly Stack<List<object>> _arrStack = new Stack<List<object>>();
 
 		private const int CONTEXT_KEY = 0;
 		private const int CONSTEXT_ARRAY = 1;
-		private int context = CONTEXT_KEY;
+		private int _context = CONTEXT_KEY;
 
 		#region Constructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		internal FileParser()
+		{
+			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+
+			BPSFile = new BPSFile();
+			Input = "";
+		}
 
 		/// <summary>
 		/// Constructor setting the input.
@@ -48,11 +59,10 @@ namespace BPSLib.Parser.File
 		/// <param name="input">the input to be parsed.</param>
 		internal FileParser(string input)
 		{
+			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+
 			BPSFile = new BPSFile();
 			Input = input;
-			arrStack = new Stack<List<object>>();
-
-			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
 		}
 
 		#endregion Constructors
@@ -89,7 +99,7 @@ namespace BPSLib.Parser.File
 			switch (_curToken.Category)
 			{
 				case TokenCategory.KEY:
-					key = _curToken.Image;
+					_key = _curToken.Image;
 					Value();
 					Key();
 					break;
@@ -132,100 +142,102 @@ namespace BPSLib.Parser.File
 		private void String()
 		{
 			var value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
-			if (context == CONSTEXT_ARRAY)
+			if (_context == CONSTEXT_ARRAY)
 			{
-				arrStack.Peek().Add(value);
+				_arrStack.Peek().Add(value);
 				Value();
 			}
 			else
 			{
-				BPSFile.Add(key, value);
+				BPSFile.Add(_key, value);
 			}
 		}
 
 		private void Integer()
 		{
 			var value = int.Parse(_curToken.Image);
-			if (context == CONSTEXT_ARRAY)
+			if (_context == CONSTEXT_ARRAY)
 			{
-				arrStack.Peek().Add(value);
+				_arrStack.Peek().Add(value);
 				Value();
 			}
 			else
 			{
-				BPSFile.Add(key, value);
+				BPSFile.Add(_key, value);
 			}
 		}
 
 		private void Float()
 		{
 			var value = float.Parse(_curToken.Image);
-			if (context == CONSTEXT_ARRAY)
+			if (_context == CONSTEXT_ARRAY)
 			{
-				arrStack.Peek().Add(value);
+				_arrStack.Peek().Add(value);
 				Value();
 			}
 			else
 			{
-				BPSFile.Add(key, value);
+				BPSFile.Add(_key, value);
 			}
 		}
 
 		private void True()
 		{
-			if (context == CONSTEXT_ARRAY)
+			if (_context == CONSTEXT_ARRAY)
 			{
-				arrStack.Peek().Add(true);
+				_arrStack.Peek().Add(true);
 				Value();
 			}
 			else
 			{
-				BPSFile.Add(key, true);
+				BPSFile.Add(_key, true);
 			}
 		}
 
 		private void False()
 		{
-			if (context == CONSTEXT_ARRAY)
+			if (_context == CONSTEXT_ARRAY)
 			{
-				arrStack.Peek().Add(false);
+				_arrStack.Peek().Add(false);
 				Value();
 			}
 			else
 			{
-				BPSFile.Add(key, false);
+				BPSFile.Add(_key, false);
 			}
 		}
 
 		private void OpenArray()
 		{
-			if (arrStack.Count == 0)
+			if (_arrStack.Count == 0)
 			{
-				context = CONSTEXT_ARRAY;
-				arrStack.Push(new List<object>());
+				_context = CONSTEXT_ARRAY;
+				_arrStack.Push(new List<object>());
 			}
 			else
 			{
 				var newD = new List<object>();
-				arrStack.Peek().Add(newD);
-				arrStack.Push(newD);
+				_arrStack.Peek().Add(newD);
+				_arrStack.Push(newD);
 			}
 			Value();
 		}
 
 		private void CloseArray()
 		{
-			if (arrStack.Count > 1)
+			if (_arrStack.Count > 1)
 			{
-				arrStack.Pop();
+				_arrStack.Pop();
 				Value();
 			}
 			else
 			{
-				context = CONTEXT_KEY;
-				BPSFile.Add(key, arrStack.Pop());
+				_context = CONTEXT_KEY;
+				BPSFile.Add(_key, _arrStack.Pop());
 			}
 		}
+
+		// parser constrols
 
 		private void NextToken()
 		{
