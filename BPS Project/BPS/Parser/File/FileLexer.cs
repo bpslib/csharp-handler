@@ -15,7 +15,7 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class FileLexer
 	{
-		// TODO: implements line and colllumn error
+		// TODO: implements line and column error
 		// TODO: implements expecteds token
 
 		#region Vars

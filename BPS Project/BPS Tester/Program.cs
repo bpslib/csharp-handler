@@ -9,7 +9,7 @@ namespace Tester
 		{
 			try
 			{
-				var bps = BPS.Load("../../../../Examples/read_test.bps");
+				var bps = BPS.Load("../../../../../docs/examples/all_data_structures.bps");
 
 				Console.WriteLine(bps.Plain() + "\n");
 			}
