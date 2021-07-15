@@ -39,6 +39,25 @@ namespace BPSLib.Parser
 			Image = image;
 		}
 
+		public override bool Equals(object obj)
+		{
+			if ((obj == null) || !GetType().Equals(obj.GetType()))
+			{
+				return false;
+			}
+			else
+			{
+				var t = (Token)obj;
+				return Category.Equals(t.Category) && Image.Equals(t.Image);
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			// TODO: implements custom hash
+			return base.GetHashCode();
+		}
+
 		#endregion Constructors
 	}
 }

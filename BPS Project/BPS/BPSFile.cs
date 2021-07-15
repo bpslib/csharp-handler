@@ -181,7 +181,7 @@ namespace BPSLib
 			}
 			else
 			{
-				BPSFile file = (BPSFile)obj;
+				var file = (BPSFile)obj;
 				foreach (var d in _data)
 				{
 					if (!file.Contains(d.Key))
@@ -195,6 +195,7 @@ namespace BPSLib
 
 		public override int GetHashCode()
 		{
+			// TODO: implements custom hash
 			return base.GetHashCode();
 		}
 
