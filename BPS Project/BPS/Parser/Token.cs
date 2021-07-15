@@ -48,14 +48,13 @@ namespace BPSLib.Parser
 			else
 			{
 				var t = (Token)obj;
-				return Category.Equals(t.Category) && Image.Equals(t.Image);
+				return GetHashCode().Equals(t.GetHashCode());
 			}
 		}
 
 		public override int GetHashCode()
 		{
-			// TODO: implements custom hash
-			return base.GetHashCode();
+			return Image.GetHashCode() * 17 + Category.GetHashCode();
 		}
 
 		#endregion Constructors
