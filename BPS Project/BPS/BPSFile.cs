@@ -13,36 +13,32 @@ namespace BPSLib
 	/// <summary>
 	/// Class <c>BPSFile</c> represents a BPS data document.
 	/// </summary>
-    public class BPSFile : IEnumerable<KeyValuePair<string, object>>
+	public class BPSFile : IEnumerable<KeyValuePair<string, object>>
 	{
-        #region Vars
-
 		/// <summary>
 		/// Internal data structure.
 		/// </summary>
-        internal Dictionary<string, object> _data;
-
-        #endregion Vars
+		internal Dictionary<string, object> _data;
 
 
-        #region Constructors
+		#region Constructors
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BPSFile()
-        {
-            _data = new Dictionary<string, object>();
-        }
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public BPSFile()
+		{
+			_data = new Dictionary<string, object>();
+		}
 
 		/// <summary>
 		/// Internal constructor to init with data.
 		/// </summary>
 		/// <param name="data">The initialization data.</param>
-        internal BPSFile(Dictionary<string, object> data)
-        {
-            _data = data;
-        }
+		internal BPSFile(Dictionary<string, object> data)
+		{
+			_data = data;
+		}
 
 		#endregion Constructors
 

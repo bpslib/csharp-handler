@@ -17,8 +17,6 @@ namespace BPSLib.Parser.Plain
 	/// </summary>
 	internal class PlainParser
 	{
-		#region Vars
-
 		/// <summary>
 		/// Generated output plain text.
 		/// </summary>
@@ -28,8 +26,6 @@ namespace BPSLib.Parser.Plain
 		/// To parse file.
 		/// </summary>
 		internal BPSFile BPSFile { get; set; }
-
-		#endregion Vars
 
 
 		#region Constructors

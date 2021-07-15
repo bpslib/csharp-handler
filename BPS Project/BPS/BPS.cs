@@ -13,16 +13,12 @@ namespace BPSLib
 	/// <summary>
 	/// Class <c>BPS</c> controls general BPSFile functions.
 	/// </summary>
-    public class BPS
-    {
-        #region Constants
-
+	public class BPS
+	{
 		/// <summary>
 		/// Document file extension.
 		/// </summary>
-        internal const string BPS_FILE_EXTENSION = ".bps";
-
-        #endregion Constants
+		internal const string BPS_FILE_EXTENSION = ".bps";
 
 
 		#region Methods
@@ -95,22 +91,22 @@ namespace BPSLib
 			return parser.Plain;
 		}
 
-        #endregion Public
+		#endregion Public
 
-        #region Private
+		#region Private
 
-        /// <summary>
-        /// Insert BPS extension on filename.
-        /// </summary>
-        /// <param name="path">the path.</param>
-        private static string NormalizePath(string path)
-        {
-            return path.EndsWith(BPS_FILE_EXTENSION) ? path : path + BPS_FILE_EXTENSION;
-        }
+		/// <summary>
+		/// Insert BPS extension on filename.
+		/// </summary>
+		/// <param name="path">the path.</param>
+		private static string NormalizePath(string path)
+		{
+			return path.EndsWith(BPS_FILE_EXTENSION) ? path : path + BPS_FILE_EXTENSION;
+		}
 
-        #endregion Private
+		#endregion Private
 
-        #endregion Methods
+		#endregion Methods
 
-    }
+	}
 }

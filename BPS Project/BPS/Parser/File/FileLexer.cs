@@ -17,11 +17,6 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class FileLexer
 	{
-		// TODO: implements line and column error
-		// TODO: implements expecteds token
-
-		#region Vars
-
 		/// <summary>
 		/// Generated list of tokens.
 		/// </summary>
@@ -33,8 +28,6 @@ namespace BPSLib.Parser.File
 		private int _curIndex = 0;
 		private int _curLine = 0;
 		private int _curCollumn = -1;
-
-		#endregion Vars
 
 
 		#region Constructors

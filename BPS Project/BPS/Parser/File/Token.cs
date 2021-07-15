@@ -14,8 +14,6 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class Token
 	{
-		#region Vars
-
 		/// <summary>
 		/// Token category.
 		/// </summary>
@@ -36,7 +34,6 @@ namespace BPSLib.Parser.File
 		/// </summary>
 		internal int Collumn { get; }
 
-		#endregion Vars
 
 		#region Contructors
 
