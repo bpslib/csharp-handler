@@ -29,7 +29,7 @@ namespace BPSLib.Parser.File
 
 		// control vars
 		private readonly string _input = "";
-		private string _curChar;
+		private char _curChar;
 		private int _curIndex = 0;
 
 		#endregion Vars
@@ -108,7 +108,7 @@ namespace BPSLib.Parser.File
 						{
 							break;
 						}
-						var lexeme = _curChar;
+						var lexeme = _curChar.ToString();
 
 						// open array
 						if (_curChar.Equals(Symbols.LEFT_BRACKETS))
@@ -139,11 +139,11 @@ namespace BPSLib.Parser.File
 								Tokens.Add(new Token(TokenCategory.STRING, lexeme));
 							}
 							// numeric
-							else if (char.IsDigit(char.Parse(_curChar)) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
+							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
 							{
 								var dotted = _curChar.Equals(Symbols.DOT);
 								NextChar();
-								while (!EndOfInput() && (char.IsDigit(char.Parse(_curChar)) || _curChar.Equals(Symbols.DOT)))
+								while (!EndOfInput() && (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT)))
 								{
 									if (_curChar.Equals(Symbols.DOT))
 									{
@@ -160,7 +160,7 @@ namespace BPSLib.Parser.File
 									NextChar();
 								}
 								// float or int
-								if (lexeme.Contains(Symbols.DOT))
+								if (lexeme.Contains(Symbols.DOT.ToString()))
 								{
 									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme));
 								}
@@ -174,7 +174,7 @@ namespace BPSLib.Parser.File
 							else if (_curChar.Equals("t") || _curChar.Equals("f"))
 							{
 								NextChar();
-								while (!EndOfInput() && char.IsLetter(char.Parse(_curChar)))
+								while (!EndOfInput() && char.IsLetter(_curChar))
 								{
 									lexeme += _curChar;
 									NextChar();
@@ -198,7 +198,7 @@ namespace BPSLib.Parser.File
 							else if (_curChar.Equals("n"))
 							{
 								NextChar();
-								while (!EndOfInput() && char.IsLetter(char.Parse(_curChar)))
+								while (!EndOfInput() && char.IsLetter(_curChar))
 								{
 									lexeme += _curChar;
 									NextChar();
@@ -221,12 +221,12 @@ namespace BPSLib.Parser.File
 					}
 				}
 				// if is key
-				else if (char.IsLetter(char.Parse(_curChar)) || _curChar.Equals("_"))
+				else if (char.IsLetter(_curChar) || _curChar.Equals("_"))
 				{
-					var lexeme = _curChar;
+					var lexeme = _curChar.ToString();
 					NextChar();
 
-					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals("_") || char.IsLetterOrDigit(char.Parse(_curChar))))
+					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals("_") || char.IsLetterOrDigit(_curChar)))
 					{
 						lexeme += _curChar;
 						NextChar();
@@ -264,7 +264,7 @@ namespace BPSLib.Parser.File
 		{
 			if (_curIndex < _input.Length)
 			{
-				_curChar = _input[_curIndex++].ToString();
+				_curChar = _input[_curIndex++];
 			}
 		}
 
@@ -275,7 +275,7 @@ namespace BPSLib.Parser.File
 		{
 			if (_curIndex - 2 > 0)
 			{
-				_curChar = _input[--_curIndex - 1].ToString();
+				_curChar = _input[--_curIndex - 1];
 			}
 		}
 

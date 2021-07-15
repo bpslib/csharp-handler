@@ -14,28 +14,28 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class Symbols
 	{
-		internal const string HASH           = "#";
-		internal const string LEFT_BRACKETS  = "[";
-		internal const string RIGHT_BRACKETS = "]";
-		internal const string DOT            = ".";
-		internal const string COMMA          = ",";
-		internal const string COLON          = ":";
-		internal const string SEMICOLON      = ";";
-		internal const string MINUS          = "-";
-		internal const string QUOTE          = "'";
-		internal const string DQUOTE         = "\"";
-		internal const string NEWLINE        = "\n";
-		internal const string SPACE          = " ";
-		internal const string TAB            = "\t";
+		internal const char HASH           = '#';
+		internal const char LEFT_BRACKETS  = '[';
+		internal const char RIGHT_BRACKETS = ']';
+		internal const char DOT            = '.';
+		internal const char COMMA          = ',';
+		internal const char COLON          = ':';
+		internal const char SEMICOLON      = ';';
+		internal const char MINUS          = '-';
+		internal const char DQUOTE         = '"';
+		internal const char SPACE          = ' ';
+		internal const char QUOTE          = '\'';
+		internal const char NEWLINE        = '\n';
+		internal const char TAB            = '\t';
 
-		internal static readonly string[] Skip =
+		internal static readonly char[] Skip =
 		{
 			SPACE,
 			TAB,
 			NEWLINE
 		};
 
-		internal static bool IsSkip(string c)
+		internal static bool IsSkip(char c)
 		{
 			return Skip.Contains(c);
 		}
