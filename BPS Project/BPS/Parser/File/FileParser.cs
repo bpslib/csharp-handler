@@ -34,6 +34,7 @@ namespace BPSLib.Parser.File
 		private int _curIndex = -1;
 
 		private string _key;
+		private object _value;
 		private readonly Stack<List<object>> _arrStack = new Stack<List<object>>();
 
 		private const int CONTEXT_KEY = 0;
@@ -128,11 +129,8 @@ namespace BPSLib.Parser.File
 				case TokenCategory.FLOAT:
 					Float();
 					break;
-				case TokenCategory.TRUE:
-					True();
-					break;
-				case TokenCategory.FALSE:
-					False();
+				case TokenCategory.BOOL:
+					Bool();
 					break;
 				case TokenCategory.NULL:
 					Null();
@@ -144,82 +142,44 @@ namespace BPSLib.Parser.File
 
 		private void String()
 		{
-			var value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
-			if (_context == CONSTEXT_ARRAY)
-			{
-				_arrStack.Peek().Add(value);
-				Value();
-			}
-			else
-			{
-				BPSFile.Set(_key, value);
-			}
+			_value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
+			DefaultValue();
 		}
 
 		private void Integer()
 		{
-			var value = int.Parse(_curToken.Image);
-			if (_context == CONSTEXT_ARRAY)
-			{
-				_arrStack.Peek().Add(value);
-				Value();
-			}
-			else
-			{
-				BPSFile.Set(_key, value);
-			}
+			_value = int.Parse(_curToken.Image);
+			DefaultValue();
 		}
 
 		private void Float()
 		{
-			var value = float.Parse(_curToken.Image);
-			if (_context == CONSTEXT_ARRAY)
-			{
-				_arrStack.Peek().Add(value);
-				Value();
-			}
-			else
-			{
-				BPSFile.Set(_key, value);
-			}
+			_value = float.Parse(_curToken.Image);
+			DefaultValue();
 		}
 
-		private void True()
+		private void Bool()
 		{
-			if (_context == CONSTEXT_ARRAY)
-			{
-				_arrStack.Peek().Add(true);
-				Value();
-			}
-			else
-			{
-				BPSFile.Set(_key, true);
-			}
-		}
-
-		private void False()
-		{
-			if (_context == CONSTEXT_ARRAY)
-			{
-				_arrStack.Peek().Add(false);
-				Value();
-			}
-			else
-			{
-				BPSFile.Set(_key, false);
-			}
+			_value = bool.Parse(_curToken.Image);
+			DefaultValue();
 		}
 
 		private void Null()
 		{
+			_value = null;
+			DefaultValue();
+		}
+
+		private void DefaultValue()
+		{
 			if (_context == CONSTEXT_ARRAY)
 			{
-				_arrStack.Peek().Add(null);
+				_arrStack.Peek().Add(_value);
 				Value();
 			}
 			else
 			{
-				BPSFile.Set(_key, null);
+				BPSFile.Set(_key, _value);
 			}
 		}
 

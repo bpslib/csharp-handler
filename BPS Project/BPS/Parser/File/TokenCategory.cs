@@ -17,10 +17,9 @@ namespace BPSLib.Parser.File
 		STRING      = 2,
 		INTEGER     = 3,
 		FLOAT       = 4,
-		TRUE        = 5,
-		FALSE       = 6,
-		OPEN_ARRAY  = 7,
-		CLOSE_ARRAY = 8,
-		NULL        = 9
+		BOOL        = 5,
+		OPEN_ARRAY  = 6,
+		CLOSE_ARRAY = 7,
+		NULL        = 8
 	}
 }

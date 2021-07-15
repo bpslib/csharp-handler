@@ -180,13 +180,9 @@ namespace BPSLib.Parser.File
 									NextChar();
 								}
 								// true or false
-								if (lexeme.Equals("true"))
+								if (lexeme.Equals("true") || lexeme.Equals("false"))
 								{
-									Tokens.Add(new Token(TokenCategory.TRUE, lexeme));
-								}
-								else if (lexeme.Equals("false"))
-								{
-									Tokens.Add(new Token(TokenCategory.FALSE, lexeme));
+									Tokens.Add(new Token(TokenCategory.BOOL, lexeme));
 								}
 								else
 								{
