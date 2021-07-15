@@ -28,7 +28,7 @@ namespace BPSLib.Parser.File
 		internal List<Token> Tokens { get; }
 
 		// control vars
-		private readonly string _input;
+		private readonly string _input = "";
 		private string _curChar;
 		private int _curIndex = 0;
 
@@ -37,6 +37,18 @@ namespace BPSLib.Parser.File
 
 		#region Constructors
 
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		internal FileLexer()
+		{
+			Tokens = new List<Token>();
+		}
+
+		/// <summary>
+		/// Constructor setting the input.
+		/// </summary>
+		/// <param name="input">the input to be parsed.</param>
 		internal FileLexer(string input)
 		{
 			Tokens = new List<Token>();
