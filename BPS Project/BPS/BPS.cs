@@ -59,7 +59,9 @@ namespace BPSLib
 		{
 			try
 			{
-				var sw = new StreamWriter(NormalizePath(path));
+				var normalizedPath = NormalizePath(path);
+				Directory.CreateDirectory(normalizedPath.Remove(normalizedPath.LastIndexOf(Path.DirectorySeparatorChar)));
+				var sw = new StreamWriter(normalizedPath);
 				sw.WriteLine(Plain(file));
 				sw.Close();
 			}
