@@ -14,7 +14,8 @@ namespace BPS_UnitTest.Parser.File
 		{
 			// Arrange
 			string input =
-				"string:'string';\n" +
+				"string:\"string\";\n" +
+				"char:'c';\n" +
 				"int:10;\n" +
 				"float:0.5;\n" +
 				"bool:true;\n" +
@@ -22,20 +23,22 @@ namespace BPS_UnitTest.Parser.File
 			List<Token> tokens = new List<Token>
 			{
 				new Token(TokenCategory.KEY, "string", 0, 0),
-				new Token(TokenCategory.STRING, "'string'", 0, 0),
-				new Token(TokenCategory.KEY, "int", 0, 0),
-				new Token(TokenCategory.INTEGER, "10", 0, 0),
-				new Token(TokenCategory.KEY, "float", 0, 0),
-				new Token(TokenCategory.FLOAT, "0.5", 0, 0),
-				new Token(TokenCategory.KEY, "bool", 0, 0),
-				new Token(TokenCategory.BOOL, "true", 0, 0),
-				new Token(TokenCategory.KEY, "arr", 0, 0),
-				new Token(TokenCategory.OPEN_ARRAY, "[", 0, 0),
-				new Token(TokenCategory.INTEGER, "0", 0, 0),
-				new Token(TokenCategory.INTEGER, "1", 0, 0),
-				new Token(TokenCategory.INTEGER, "2", 0, 0),
-				new Token(TokenCategory.CLOSE_ARRAY, "]", 0, 0),
-				new Token(TokenCategory.EOF, "", 0, 0)
+				new Token(TokenCategory.STRING, "\"string\"", 0, 7),
+				new Token(TokenCategory.KEY, "char", 1, 0),
+				new Token(TokenCategory.CHAR, "'c'", 1, 5),
+				new Token(TokenCategory.KEY, "int", 2, 0),
+				new Token(TokenCategory.INTEGER, "10", 2, 4),
+				new Token(TokenCategory.KEY, "float", 3, 0),
+				new Token(TokenCategory.FLOAT, "0.5", 3, 6),
+				new Token(TokenCategory.KEY, "bool", 4, 0),
+				new Token(TokenCategory.BOOL, "true", 4, 5),
+				new Token(TokenCategory.KEY, "arr", 5, 0),
+				new Token(TokenCategory.OPEN_ARRAY, "[", 5, 4),
+				new Token(TokenCategory.INTEGER, "0", 5, 5),
+				new Token(TokenCategory.INTEGER, "1", 5, 7),
+				new Token(TokenCategory.INTEGER, "2", 5, 9),
+				new Token(TokenCategory.CLOSE_ARRAY, "]", 5, 10),
+				new Token(TokenCategory.EOF, "", 6, -1)
 			};
 			FileLexer lexer = new FileLexer(input);
 

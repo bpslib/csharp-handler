@@ -128,6 +128,7 @@ namespace BPSLib.Parser.File
 							// string
 							if (_curChar.Equals(Symbols.DQUOTE))
 							{
+								var initCol = _curCollumn;
 								var beforeChar = _curChar;
 								NextChar();
 								while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
@@ -137,11 +138,12 @@ namespace BPSLib.Parser.File
 									NextChar();
 								}
 								lexeme += _curChar;
-								Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, _curCollumn));
+								Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
 							}
 							// char
 							else if (_curChar.Equals(Symbols.QUOTE))
 							{
+								var initCol = _curCollumn;
 								NextChar();
 								if (_curChar.Equals('\\'))
 								{
@@ -155,11 +157,12 @@ namespace BPSLib.Parser.File
 									throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
 								}
 								lexeme += _curChar;
-								Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, _curCollumn));
+								Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, initCol));
 							}
 							// numeric
 							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
 							{
+								var initCol = _curCollumn;
 								var dotted = _curChar.Equals(Symbols.DOT);
 								NextChar();
 								while (!EndOfInput() && (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT)))
@@ -181,17 +184,18 @@ namespace BPSLib.Parser.File
 								// float or int
 								if (lexeme.Contains(Symbols.DOT.ToString()))
 								{
-									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, _curCollumn));
+									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
 								}
 								else
 								{
-									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, _curCollumn));
+									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
 								}
 								PreviousChar();
 							}
 							// boolean or null
 							else if (_curChar.Equals('t') || _curChar.Equals('f') || _curChar.Equals('n'))
 							{
+								var initCol = _curCollumn;
 								NextChar();
 								while (!EndOfInput() && char.IsLetter(_curChar))
 								{
@@ -201,7 +205,7 @@ namespace BPSLib.Parser.File
 								// true, false or null
 								if (lexeme.Equals("true") || lexeme.Equals("false") || lexeme.Equals("null"))
 								{
-									Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, _curCollumn));
+									Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
 								}
 								else
 								{
@@ -219,6 +223,7 @@ namespace BPSLib.Parser.File
 				// if is key
 				else if (char.IsLetter(_curChar) || _curChar.Equals('_'))
 				{
+					var initCol = _curCollumn;
 					var lexeme = _curChar.ToString();
 					NextChar();
 
@@ -228,7 +233,7 @@ namespace BPSLib.Parser.File
 						NextChar();
 					}
 					PreviousChar();
-					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, _curCollumn));
+					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
 				}
 				else
 				{

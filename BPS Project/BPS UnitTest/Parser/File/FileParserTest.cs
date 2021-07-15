@@ -13,12 +13,13 @@ namespace BPS_UnitTest.Parser.File
 		{
 			// Arrange
 			string input =
-				"string:'string';\n" +
+				"string:\"string\";\n" +
+				"char:'c';\n" +
 				"int:10;\n" +
 				"float:0.5;\n" +
 				"boolTrue:true;\n" +
 				"boolFalse:false;\n" +
-				"stringArr:['yes','no','maybe'];\n" +
+				"stringArr:[\"yes\",\"no\",\"maybe\"];\n" +
 				"intArr:[0,1,2,10,-5];\n" +
 				"floatArr:[0.9,1.7,0.2,1.06,-5.618];\n" +
 				"boolArr:[true,false,true];\n" +
@@ -26,6 +27,7 @@ namespace BPS_UnitTest.Parser.File
 			BPSFile file = new BPSFile
 			{
 				{ "string", "string" },
+				{ "char", 'c' },
 				{ "int", 10 },
 				{ "float", 0.5 },
 				{ "boolTrue", true },
