@@ -123,6 +123,9 @@ namespace BPSLib.Parser.File
 				case TokenCategory.STRING:
 					String();
 					break;
+				case TokenCategory.CHAR:
+					Char();
+					break;
 				case TokenCategory.INTEGER:
 					Integer();
 					break;
@@ -143,6 +146,12 @@ namespace BPSLib.Parser.File
 		private void String()
 		{
 			_value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
+			DefaultValue();
+		}
+
+		private void Char()
+		{
+			_value = char.Parse(_curToken.Image.Substring(1, _curToken.Image.Length - 2).Replace("\\", string.Empty));
 			DefaultValue();
 		}
 

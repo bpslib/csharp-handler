@@ -1,8 +1,8 @@
-# Full implementation of a BPS file.
+# All data types of a BPS file.
 
-# Strings
-string1:'string between single quotes';
-string2:"string between double quotes";
+# Literals
+string:"string between double quotes";
+char:"c";
 
 # Numerics
 int:10;
@@ -13,7 +13,7 @@ boolTrue:true;
 boolFalse:false;
 
 # Vector
-stringArr:["yes", 'no', "maybe"];
+stringArr:["yes", "no", "maybe"];
 intArr:[0, 1, 2, 10, -5];
 floatArr:[0.9, 1.7, 0.2, 1.06, -5.618];
 boolArr:[true, false, true];

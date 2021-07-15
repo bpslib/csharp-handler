@@ -14,12 +14,13 @@ namespace BPSLib.Parser.File
 	{
 		EOF         = 0,
 		KEY         = 1,
-		STRING      = 2,
-		INTEGER     = 3,
-		FLOAT       = 4,
-		BOOL        = 5,
-		OPEN_ARRAY  = 6,
-		CLOSE_ARRAY = 7,
-		NULL        = 8
+		NULL        = 2,
+		STRING      = 3,
+		CHAR        = 4,
+		INTEGER     = 5,
+		FLOAT       = 6,
+		BOOL        = 7,
+		OPEN_ARRAY  = 8,
+		CLOSE_ARRAY = 9
 	}
 }

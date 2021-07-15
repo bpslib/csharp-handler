@@ -133,12 +133,11 @@ namespace BPSLib.Parser.File
 						else
 						{
 							// string
-							if (_curChar.Equals(Symbols.QUOTE) || _curChar.Equals(Symbols.DQUOTE))
+							if (_curChar.Equals(Symbols.DQUOTE))
 							{
-								var closeQuote = _curChar;
 								var beforeChar = _curChar;
 								NextChar();
-								while (!EndOfInput() && (!_curChar.Equals(closeQuote) && !beforeChar.Equals("\\")))
+								while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
 								{
 									beforeChar = _curChar;
 									lexeme += _curChar;
@@ -146,6 +145,24 @@ namespace BPSLib.Parser.File
 								}
 								lexeme += _curChar;
 								Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, _curCollumn));
+							}
+							// char
+							else if (_curChar.Equals(Symbols.QUOTE))
+							{
+								NextChar();
+								if (_curChar.Equals('\\'))
+								{
+									lexeme += _curChar;
+									NextChar();
+								}
+								lexeme += _curChar;
+								NextChar();
+								if (!_curChar.Equals(Symbols.QUOTE))
+								{
+									throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
+								}
+								lexeme += _curChar;
+								Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, _curCollumn));
 							}
 							// numeric
 							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
