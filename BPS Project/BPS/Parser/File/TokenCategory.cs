@@ -5,7 +5,7 @@
  *
  */
 
-namespace BPSLib.Parser
+namespace BPSLib.Parser.File
 {
 	/// <summary>
 	/// Enum <e>TokenCategory</e> contains all token categories.

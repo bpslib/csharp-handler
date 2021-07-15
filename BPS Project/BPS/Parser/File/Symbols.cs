@@ -7,7 +7,7 @@
 
 using System.Linq;
 
-namespace BPSLib.Parser
+namespace BPSLib.Parser.File
 {
 	/// <summary>
 	/// Class <c>Symbols</c> contains common language symbols.

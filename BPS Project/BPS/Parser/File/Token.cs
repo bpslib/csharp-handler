@@ -5,7 +5,7 @@
  *
  */
 
-namespace BPSLib.Parser
+namespace BPSLib.Parser.File
 {
 	/// <summary>
 	/// Class <c>Token</c> represents a token in parser.
