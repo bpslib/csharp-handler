@@ -177,8 +177,8 @@ namespace BPSLib.Parser.File
 								}
 								PreviousChar();
 							}
-							// boolean
-							else if (_curChar.Equals('t') || _curChar.Equals('f'))
+							// boolean or null
+							else if (_curChar.Equals('t') || _curChar.Equals('f') || _curChar.Equals('n'))
 							{
 								NextChar();
 								while (!EndOfInput() && char.IsLetter(_curChar))
@@ -186,39 +186,20 @@ namespace BPSLib.Parser.File
 									lexeme += _curChar;
 									NextChar();
 								}
-								// true or false
-								if (lexeme.Equals("true") || lexeme.Equals("false"))
+								// true, false or null
+								if (lexeme.Equals("true") || lexeme.Equals("false") || lexeme.Equals("null"))
 								{
 									Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, _curCollumn));
 								}
 								else
 								{
-									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'true' or 'false'.");
-								}
-								PreviousChar();
-							}
-							// null
-							else if (_curChar.Equals('n'))
-							{
-								NextChar();
-								while (!EndOfInput() && char.IsLetter(_curChar))
-								{
-									lexeme += _curChar;
-									NextChar();
-								}
-								if (lexeme.Equals("null"))
-								{
-									Tokens.Add(new Token(TokenCategory.NULL, lexeme, _curLine, _curCollumn));
-								}
-								else
-								{
-									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
+									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'true', 'false' or 'null'.");
 								}
 								PreviousChar();
 							}
 							else
 							{
-								throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
+								throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 							}
 						}
 					}
@@ -239,7 +220,7 @@ namespace BPSLib.Parser.File
 				}
 				else
 				{
-					throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
+					throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 				}
 			}
 
