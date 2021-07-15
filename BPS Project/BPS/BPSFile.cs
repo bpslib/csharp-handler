@@ -15,6 +15,8 @@ namespace BPSLib
 	/// </summary>
     public class BPSFile : IEnumerable<KeyValuePair<string, object>>
 	{
+		// TODO: check if its necessary to interate, if not change to hash table
+
         #region Vars
 
 		/// <summary>
@@ -182,21 +184,18 @@ namespace BPSLib
 			else
 			{
 				var file = (BPSFile)obj;
-				foreach (var d in _data)
-				{
-					if (!file.Contains(d.Key))
-					{
-						return false;
-					}
-				}
-				return _data.Count == file.Count();
+				return GetHashCode().Equals(file.GetHashCode());
 			}
 		}
 
 		public override int GetHashCode()
 		{
-			// TODO: implements custom hash
-			return base.GetHashCode();
+			var hash = 7;
+			foreach (var d in _data)
+			{
+				hash = hash * 31 + d.GetHashCode();
+			}
+			return hash;
 		}
 
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator()

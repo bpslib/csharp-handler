@@ -1,6 +1,5 @@
 ﻿using BPSLib;
 using System;
-using System.Collections.Generic;
 
 namespace Tester
 {
