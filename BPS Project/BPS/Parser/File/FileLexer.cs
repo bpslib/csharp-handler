@@ -17,6 +17,8 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class FileLexer
 	{
+		//TODO: add semicolon token
+
 		/// <summary>
 		/// Generated list of tokens.
 		/// </summary>
@@ -72,8 +74,7 @@ namespace BPSLib.Parser.File
 				{
 					if (_curChar.Equals(Symbols.NEWLINE))
 					{
-						++_curLine;
-						_curCollumn = -1;
+						NextLine();
 					}
 					continue;
 				}
@@ -85,15 +86,34 @@ namespace BPSLib.Parser.File
 					{
 						NextChar();
 					}
-					++_curLine;
-					_curCollumn = -1;
+					NextLine();
 				}
-				// if is value
-				else if (_curChar.Equals(Symbols.COLON))
+				// if is key
+				else if (char.IsLetter(_curChar) || _curChar.Equals('_'))
 				{
+					var initCol = _curCollumn;
+					var lexeme = _curChar.ToString();
+					NextChar();
+
+					// loops the key
+					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals('_') || char.IsLetterOrDigit(_curChar)))
+					{
+						lexeme += _curChar;
+						NextChar();
+					}
+					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
+
+					// check if current char is colon before read data
+					if (!_curChar.Equals(Symbols.COLON))
+					{
+						throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
+					}
+
+					// value
 					while (!EndOfInput() && !_curChar.Equals(Symbols.SEMICOLON))
 					{
 						NextChar();
+						// skip comma and verify if there are a duplicated comma (a empty gap)
 						if (_curChar.Equals(Symbols.COMMA))
 						{
 							NextChar();
@@ -102,15 +122,17 @@ namespace BPSLib.Parser.File
 								throw new Exception("Double comma encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 							}
 						}
+						// to skip the skip chars
 						while (!EndOfInput() && Symbols.IsSkip(_curChar))
 						{
 							NextChar();
 						}
+						// semicolon indicates the end of value
 						if (_curChar.Equals(Symbols.SEMICOLON))
 						{
 							break;
 						}
-						var lexeme = _curChar.ToString();
+						lexeme = _curChar.ToString();
 
 						// open array
 						if (_curChar.Equals(Symbols.LEFT_BRACKETS))
@@ -128,7 +150,7 @@ namespace BPSLib.Parser.File
 							// string
 							if (_curChar.Equals(Symbols.DQUOTE))
 							{
-								var initCol = _curCollumn;
+								initCol = _curCollumn;
 								var beforeChar = _curChar;
 								NextChar();
 								while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
@@ -143,7 +165,7 @@ namespace BPSLib.Parser.File
 							// char
 							else if (_curChar.Equals(Symbols.QUOTE))
 							{
-								var initCol = _curCollumn;
+								initCol = _curCollumn;
 								NextChar();
 								if (_curChar.Equals('\\'))
 								{
@@ -162,7 +184,7 @@ namespace BPSLib.Parser.File
 							// numeric
 							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
 							{
-								var initCol = _curCollumn;
+								initCol = _curCollumn;
 								var dotted = _curChar.Equals(Symbols.DOT);
 								NextChar();
 								while (!EndOfInput() && (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT)))
@@ -190,12 +212,12 @@ namespace BPSLib.Parser.File
 								{
 									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
 								}
-								PreviousChar();
+								//PreviousChar();
 							}
 							// boolean or null
 							else if (_curChar.Equals('t') || _curChar.Equals('f') || _curChar.Equals('n'))
 							{
-								var initCol = _curCollumn;
+								initCol = _curCollumn;
 								NextChar();
 								while (!EndOfInput() && char.IsLetter(_curChar))
 								{
@@ -211,7 +233,7 @@ namespace BPSLib.Parser.File
 								{
 									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'true', 'false' or 'null'.");
 								}
-								PreviousChar();
+								//PreviousChar();
 							}
 							else
 							{
@@ -220,28 +242,13 @@ namespace BPSLib.Parser.File
 						}
 					}
 				}
-				// if is key
-				else if (char.IsLetter(_curChar) || _curChar.Equals('_'))
-				{
-					var initCol = _curCollumn;
-					var lexeme = _curChar.ToString();
-					NextChar();
-
-					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals('_') || char.IsLetterOrDigit(_curChar)))
-					{
-						lexeme += _curChar;
-						NextChar();
-					}
-					PreviousChar();
-					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
-				}
 				else
 				{
 					throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 				}
 			}
 
-			Tokens.Add(new Token(TokenCategory.EOF, "", _curLine, _curCollumn));
+			Tokens.Add(new Token(TokenCategory.EOF, "", -1, -1));
 		}
 
 		#endregion Public
@@ -256,6 +263,15 @@ namespace BPSLib.Parser.File
 		private bool EndOfInput()
 		{
 			return _curIndex >= _input.Length;
+		}
+
+		/// <summary>
+		/// Get the next char to <v>_curChar</v>.
+		/// </summary>
+		private void NextLine()
+		{
+			++_curLine;
+			_curCollumn = -1;
 		}
 
 		/// <summary>

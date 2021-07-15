@@ -38,7 +38,7 @@ namespace BPS_UnitTest.Parser.File
 				new Token(TokenCategory.INTEGER, "1", 5, 7),
 				new Token(TokenCategory.INTEGER, "2", 5, 9),
 				new Token(TokenCategory.CLOSE_ARRAY, "]", 5, 10),
-				new Token(TokenCategory.EOF, "", 6, -1)
+				new Token(TokenCategory.EOF, "", -1, -1)
 			};
 			FileLexer lexer = new FileLexer(input);
 
