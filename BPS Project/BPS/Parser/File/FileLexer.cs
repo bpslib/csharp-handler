@@ -31,6 +31,8 @@ namespace BPSLib.Parser.File
 		private readonly string _input = "";
 		private char _curChar;
 		private int _curIndex = 0;
+		private int _curLine = 0;
+		private int _curCollumn = -1;
 
 		#endregion Vars
 
@@ -75,6 +77,11 @@ namespace BPSLib.Parser.File
 				// to skip the skip chars
 				if (Symbols.IsSkip(_curChar))
 				{
+					if (_curChar.Equals(Symbols.NEWLINE))
+					{
+						++_curLine;
+						_curCollumn = -1;
+					}
 					continue;
 				}
 
@@ -97,7 +104,7 @@ namespace BPSLib.Parser.File
 							NextChar();
 							if (_curChar.Equals(Symbols.COMMA))
 							{
-								throw new Exception("[double comma] - Invalid character '" + _curChar + "' encountered.");
+								throw new Exception("Double comma encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 							}
 						}
 						while (!EndOfInput() && Symbols.IsSkip(_curChar))
@@ -113,12 +120,12 @@ namespace BPSLib.Parser.File
 						// open array
 						if (_curChar.Equals(Symbols.LEFT_BRACKETS))
 						{
-							Tokens.Add(new Token(TokenCategory.OPEN_ARRAY, lexeme));
+							Tokens.Add(new Token(TokenCategory.OPEN_ARRAY, lexeme, _curLine, _curCollumn));
 						}
 						// close array
 						else if (_curChar.Equals(Symbols.RIGHT_BRACKETS))
 						{
-							Tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, lexeme));
+							Tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, lexeme, _curLine, _curCollumn));
 						}
 						// is a value
 						else
@@ -136,7 +143,7 @@ namespace BPSLib.Parser.File
 									NextChar();
 								}
 								lexeme += _curChar;
-								Tokens.Add(new Token(TokenCategory.STRING, lexeme));
+								Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, _curCollumn));
 							}
 							// numeric
 							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
@@ -149,7 +156,7 @@ namespace BPSLib.Parser.File
 									{
 										if (dotted)
 										{
-											throw new Exception("[double dot] - Invalid character '" + _curChar + "' encountered.");
+											throw new Exception("Double dot encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 										}
 										else
 										{
@@ -162,11 +169,11 @@ namespace BPSLib.Parser.File
 								// float or int
 								if (lexeme.Contains(Symbols.DOT.ToString()))
 								{
-									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme));
+									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, _curCollumn));
 								}
 								else
 								{
-									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme));
+									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, _curCollumn));
 								}
 								PreviousChar();
 							}
@@ -182,11 +189,11 @@ namespace BPSLib.Parser.File
 								// true or false
 								if (lexeme.Equals("true") || lexeme.Equals("false"))
 								{
-									Tokens.Add(new Token(TokenCategory.BOOL, lexeme));
+									Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, _curCollumn));
 								}
 								else
 								{
-									throw new Exception("Invalid lexeme encountered: '" + lexeme + "'.\nExpected: true or false;");
+									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'true' or 'false'.");
 								}
 								PreviousChar();
 							}
@@ -201,17 +208,17 @@ namespace BPSLib.Parser.File
 								}
 								if (lexeme.Equals("null"))
 								{
-									Tokens.Add(new Token(TokenCategory.NULL, lexeme));
+									Tokens.Add(new Token(TokenCategory.NULL, lexeme, _curLine, _curCollumn));
 								}
 								else
 								{
-									throw new Exception("Invalid lexeme encountered: '" + lexeme + "'.\nExpected: true or false;");
+									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
 								}
 								PreviousChar();
 							}
 							else
 							{
-								throw new Exception("Invalid character '" + _curChar + "' encountered.");
+								throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
 							}
 						}
 					}
@@ -228,15 +235,15 @@ namespace BPSLib.Parser.File
 						NextChar();
 					}
 					PreviousChar();
-					Tokens.Add(new Token(TokenCategory.KEY, lexeme));
+					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, _curCollumn));
 				}
 				else
 				{
-					throw new Exception("Invalid character '" + _curChar + "' encountered.");
+					throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'null'.");
 				}
 			}
 
-			Tokens.Add(new Token(TokenCategory.EOF, ""));
+			Tokens.Add(new Token(TokenCategory.EOF, "", _curLine, _curCollumn));
 		}
 
 		#endregion Public
@@ -261,6 +268,7 @@ namespace BPSLib.Parser.File
 			if (_curIndex < _input.Length)
 			{
 				_curChar = _input[_curIndex++];
+				++_curCollumn;
 			}
 		}
 
@@ -272,6 +280,7 @@ namespace BPSLib.Parser.File
 			if (_curIndex - 2 > 0)
 			{
 				_curChar = _input[--_curIndex - 1];
+				--_curCollumn;
 			}
 		}
 

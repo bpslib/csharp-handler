@@ -5,6 +5,8 @@
  *
  */
 
+using System.Collections.Generic;
+
 namespace BPSLib.Parser.File
 {
 	/// <summary>
@@ -24,6 +26,16 @@ namespace BPSLib.Parser.File
 		/// </summary>
 		internal string Image { get; }
 
+		/// <summary>
+		/// Line that was encountered.
+		/// </summary>
+		internal int Line { get; }
+
+		/// <summary>
+		/// Collumn that was encountered.
+		/// </summary>
+		internal int Collumn { get; }
+
 		#endregion Vars
 
 		#region Contructors
@@ -33,10 +45,12 @@ namespace BPSLib.Parser.File
 		/// </summary>
 		/// <param name="category">category.</param>
 		/// <param name="image">string representation.</param>
-		internal Token(TokenCategory category, string image)
+		internal Token(TokenCategory category, string image, int line, int collumn)
 		{
 			Category = category;
 			Image = image;
+			Line = line;
+			Collumn = collumn;
 		}
 
 		public override bool Equals(object obj)
