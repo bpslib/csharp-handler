@@ -26,14 +26,16 @@ namespace Tester
 				file.Add("name", "Carlos Machado");
 				file.Add("age", 26);
 				file.Add("height", 1.93);
-				file.Add("playVideoGame", true);
-				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
+				file.Add("playVideoGame", false);
+				file.Add("wichGames", new List<object> { });
+				file.Add("favoriteVideoGame", null);
 
 				file.Save(saveLoad);
 
 				file = BPS.Load(saveLoad);
-				file.Add("playVideoGame", false);
-				file.Add("wichGames", new List<object> { });
+				file.Add("playVideoGame", true);
+				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
+				file.Add("favoriteVideoGame", "OSRS");
 
 				file.Save(saveLoad);
 			}

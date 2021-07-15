@@ -182,6 +182,25 @@ namespace BPSLib.Parser.File
 								}
 								PreviousChar();
 							}
+							// null
+							else if (_curChar.Equals("n"))
+							{
+								NextChar();
+								while (!EndOfInput() && char.IsLetter(char.Parse(_curChar)))
+								{
+									lexeme += _curChar;
+									NextChar();
+								}
+								if (lexeme.Equals("null"))
+								{
+									Tokens.Add(new Token(TokenCategory.NULL, lexeme));
+								}
+								else
+								{
+									throw new Exception("Invalid lexeme encountered: '" + lexeme + "'.\nExpected: true or false;");
+								}
+								PreviousChar();
+							}
 							else
 							{
 								throw new Exception("Invalid character '" + _curChar + "' encountered.");

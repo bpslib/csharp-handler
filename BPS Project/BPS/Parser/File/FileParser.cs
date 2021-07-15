@@ -134,6 +134,9 @@ namespace BPSLib.Parser.File
 				case TokenCategory.FALSE:
 					False();
 					break;
+				case TokenCategory.NULL:
+					Null();
+					break;
 				default:
 					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
 			}
@@ -204,6 +207,19 @@ namespace BPSLib.Parser.File
 			else
 			{
 				BPSFile.Add(_key, false);
+			}
+		}
+
+		private void Null()
+		{
+			if (_context == CONSTEXT_ARRAY)
+			{
+				_arrStack.Peek().Add(null);
+				Value();
+			}
+			else
+			{
+				BPSFile.Add(_key, null);
 			}
 		}
 

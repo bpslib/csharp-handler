@@ -20,7 +20,7 @@ namespace BPSLib.Parser.Plain
 		#region Vars
 
 		/// <summary>
-		/// Generated plain text.
+		/// Generated output plain text.
 		/// </summary>
 		internal string Plain { get; private set; }
 
@@ -69,6 +69,7 @@ namespace BPSLib.Parser.Plain
 		/// </summary>
 		internal void Parse()
 		{
+			// loops bps file adding each key-value to output
 			foreach (var d in BPSFile)
 			{
 				Plain += d.Key + ":";
@@ -88,12 +89,19 @@ namespace BPSLib.Parser.Plain
 		/// <param name="value">the value to be parsed.</param>
 		private void ParseValue(object value)
 		{
-			if (value.GetType().Equals(typeof(List<object>)))
+			// null values
+			if (value == null)
+			{
+				Plain += "null";
+			}
+			// value is an array
+			else if (value.GetType().Equals(typeof(List<object>)))
 			{
 				Plain += "[";
 				ParseArray(value);
 				Plain += "]";
 			}
+			// it's a normal value
 			else
 			{
 				if (value.GetType().Equals(typeof(string)))
@@ -118,20 +126,14 @@ namespace BPSLib.Parser.Plain
 		private void ParseArray(object value)
 		{
 			var arr = (List<object>)value;
+			// loops each value in array
 			foreach (var v in arr)
 			{
-				if (v.GetType().Equals(typeof(List<object>)))
-				{
-					Plain += "[";
-					ParseArray(v);
-					Plain += "],";
-				}
-				else
-				{
-					ParseValue(v);
-					Plain += ",";
-				}
+				// parses a value recursively
+				ParseValue(v);
+				Plain += ",";
 			}
+			// prevents to remove "[" when no data
 			if (arr.Count > 0)
 				Plain = Plain.Substring(0, Plain.Length - 1);
 		}

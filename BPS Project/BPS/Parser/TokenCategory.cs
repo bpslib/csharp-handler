@@ -20,6 +20,7 @@ namespace BPSLib.Parser
 		TRUE        = 5,
 		FALSE       = 6,
 		OPEN_ARRAY  = 7,
-		CLOSE_ARRAY = 8
+		CLOSE_ARRAY = 8,
+		NULL        = 9
 	}
 }
