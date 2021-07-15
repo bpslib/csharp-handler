@@ -100,7 +100,7 @@ namespace BPSLib.Parser.File
 								throw new Exception("[double comma] - Invalid character '" + _curChar + "' encountered.");
 							}
 						}
-						while (!EndOfInput() && (_curChar.Equals(Symbols.SPACE) || _curChar.Equals(Symbols.NEWLINE)))
+						while (!EndOfInput() && Symbols.IsSkip(_curChar))
 						{
 							NextChar();
 						}
