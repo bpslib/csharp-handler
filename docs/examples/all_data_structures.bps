@@ -1,8 +1,9 @@
 # All data types of a BPS file.
 
 # Literals
-string:"string between double quotes";
-char:"c";
+string:"string \"between\" double quotes";
+char:'c';
+quote_in_char:'\'';
 
 # Numerics
 int:10;

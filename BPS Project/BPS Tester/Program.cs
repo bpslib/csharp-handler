@@ -47,7 +47,7 @@ namespace Tester
 
 		static void Test()
 		{
-			var bps = BPS.Load("../../../../../docs/examples/test.bps");
+			var bps = BPS.Load("../../../../../docs/examples/all_data_structures.bps");
 			Console.WriteLine(bps.Plain() + "\n");
 		}
 	}
