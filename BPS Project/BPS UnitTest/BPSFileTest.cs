@@ -13,8 +13,8 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
-			file.Set("key2", "value2");
+			file.Add("key", "value");
+			file.Add("key2", "value2");
 
 			// Assert
 			Assert.AreEqual(2, file.Count());
@@ -27,8 +27,8 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
-			file.Set("key2", "value2");
+			file.Add("key", "value");
+			file.Add("key2", "value2");
 
 			// Assert
 			Assert.IsTrue(file.Contains("key2"));
@@ -43,7 +43,7 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
+			file.Add("key", "value");
 
 			// Assert
 			Assert.AreEqual(1, file.Count());
@@ -56,7 +56,7 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
+			file.Add("key", "value");
 			file.Remove("key");
 
 			// Assert
@@ -70,7 +70,7 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
+			file.Add("key", "value");
 
 			// Assert
 			Assert.AreEqual("value", file.Find("key"));
@@ -83,8 +83,8 @@ namespace BPS_UnitTest
 			BPSFile file = new BPSFile();
 
 			// Act
-			file.Set("key", "value");
-			file.Set("key2", "value2");
+			file.Add("key", "value");
+			file.Add("key2", "value2");
 			file.Clear();
 
 			// Assert

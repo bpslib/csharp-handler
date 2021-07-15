@@ -179,7 +179,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Set(_key, _value);
+				BPSFile.Add(_key, _value);
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace BPSLib.Parser.File
 			else
 			{
 				_context = CONTEXT_KEY;
-				BPSFile.Set(_key, _arrStack.Pop());
+				BPSFile.Add(_key, _arrStack.Pop());
 			}
 		}
 

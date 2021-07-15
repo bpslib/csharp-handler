@@ -94,7 +94,7 @@ namespace BPSLib
 		/// <param name="key">the key to represents the value.</param>
 		/// <param name="value">the value to store.</param>
 		/// <returns>True if it was successful.</returns>
-		public void Set(string key, object value)
+		public void Add(string key, object value)
 		{
 			if (_data.ContainsKey(key))
 			{

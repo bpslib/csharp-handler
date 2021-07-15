@@ -106,7 +106,15 @@ namespace BPSLib.Parser.Plain
 			{
 				if (value.GetType().Equals(typeof(string)))
 				{
-					Plain += "'" + value + "'";
+					var str = (string)value;
+					if (str.Length > 1)
+					{
+						Plain += "\"" + value + "\"";
+					}
+					else
+					{
+						Plain += "'" + value + "'";
+					}
 				}
 				else if (value.GetType().Equals(typeof(bool)))
 				{

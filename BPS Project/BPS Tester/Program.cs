@@ -9,8 +9,8 @@ namespace Tester
 	{
 		static void Main(string[] args)
 		{
-			//Test();
-			SaveLoadTest();
+			Test();
+			//SaveLoadTest();
 		}
 
 		static void SaveLoadTest()
@@ -23,19 +23,19 @@ namespace Tester
 
 				var file = new BPSFile();
 
-				file.Set("name", "Carlos Machado");
-				file.Set("age", 26);
-				file.Set("height", 1.93);
-				file.Set("playVideoGame", false);
-				file.Set("wichGames", new List<object> { });
-				file.Set("favoriteVideoGame", null);
+				file.Add("name", "Carlos Machado");
+				file.Add("age", 26);
+				file.Add("height", 1.93);
+				file.Add("playVideoGame", false);
+				file.Add("wichGames", new List<object> { });
+				file.Add("favoriteVideoGame", null);
 
 				file.Save(saveLoad);
 
 				file = BPS.Load(saveLoad);
-				file.Set("playVideoGame", true);
-				file.Set("wichGames", new List<object> { "BDO", "OSRS", "PW" });
-				file.Set("favoriteVideoGame", "OSRS");
+				file.Add("playVideoGame", true);
+				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
+				file.Add("favoriteVideoGame", "OSRS");
 
 				file.Save(saveLoad);
 			}
@@ -47,7 +47,7 @@ namespace Tester
 
 		static void Test()
 		{
-			var bps = BPS.Load("../../../../../docs/examples/all_data_structures.bps");
+			var bps = BPS.Load("../../../../../docs/examples/test.bps");
 			Console.WriteLine(bps.Plain() + "\n");
 		}
 	}

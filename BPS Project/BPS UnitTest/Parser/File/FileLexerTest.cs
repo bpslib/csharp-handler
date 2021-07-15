@@ -21,21 +21,21 @@ namespace BPS_UnitTest.Parser.File
 				"arr:[0,1,2];\n";
 			List<Token> tokens = new List<Token>
 			{
-				new Token(TokenCategory.KEY, "string"),
-				new Token(TokenCategory.STRING, "'string'"),
-				new Token(TokenCategory.KEY, "int"),
-				new Token(TokenCategory.INTEGER, "10"),
-				new Token(TokenCategory.KEY, "float"),
-				new Token(TokenCategory.FLOAT, "0.5"),
-				new Token(TokenCategory.KEY, "bool"),
-				new Token(TokenCategory.TRUE, "true"),
-				new Token(TokenCategory.KEY, "arr"),
-				new Token(TokenCategory.OPEN_ARRAY, "["),
-				new Token(TokenCategory.INTEGER, "0"),
-				new Token(TokenCategory.INTEGER, "1"),
-				new Token(TokenCategory.INTEGER, "2"),
-				new Token(TokenCategory.CLOSE_ARRAY, "]"),
-				new Token(TokenCategory.EOF, "")
+				new Token(TokenCategory.KEY, "string", 0, 0),
+				new Token(TokenCategory.STRING, "'string'", 0, 0),
+				new Token(TokenCategory.KEY, "int", 0, 0),
+				new Token(TokenCategory.INTEGER, "10", 0, 0),
+				new Token(TokenCategory.KEY, "float", 0, 0),
+				new Token(TokenCategory.FLOAT, "0.5", 0, 0),
+				new Token(TokenCategory.KEY, "bool", 0, 0),
+				new Token(TokenCategory.BOOL, "true", 0, 0),
+				new Token(TokenCategory.KEY, "arr", 0, 0),
+				new Token(TokenCategory.OPEN_ARRAY, "[", 0, 0),
+				new Token(TokenCategory.INTEGER, "0", 0, 0),
+				new Token(TokenCategory.INTEGER, "1", 0, 0),
+				new Token(TokenCategory.INTEGER, "2", 0, 0),
+				new Token(TokenCategory.CLOSE_ARRAY, "]", 0, 0),
+				new Token(TokenCategory.EOF, "", 0, 0)
 			};
 			FileLexer lexer = new FileLexer(input);
 

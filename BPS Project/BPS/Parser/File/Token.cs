@@ -68,7 +68,7 @@ namespace BPSLib.Parser.File
 
 		public override int GetHashCode()
 		{
-			return Image.GetHashCode() * 17 + Category.GetHashCode();
+			return Image.GetHashCode() * 17 + Category.GetHashCode() * 7 + Line * Collumn;
 		}
 
 		#endregion Constructors

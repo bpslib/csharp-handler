@@ -92,6 +92,8 @@ namespace BPSLib.Parser.File
 					{
 						NextChar();
 					}
+					++_curLine;
+					_curCollumn = -1;
 				}
 				// if is value
 				else if (_curChar.Equals(Symbols.COLON))
