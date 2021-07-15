@@ -171,7 +171,7 @@ namespace BPSLib.Parser.File
 								PreviousChar();
 							}
 							// boolean
-							else if (_curChar.Equals("t") || _curChar.Equals("f"))
+							else if (_curChar.Equals('t') || _curChar.Equals('f'))
 							{
 								NextChar();
 								while (!EndOfInput() && char.IsLetter(_curChar))
@@ -191,7 +191,7 @@ namespace BPSLib.Parser.File
 								PreviousChar();
 							}
 							// null
-							else if (_curChar.Equals("n"))
+							else if (_curChar.Equals('n'))
 							{
 								NextChar();
 								while (!EndOfInput() && char.IsLetter(_curChar))
@@ -217,12 +217,12 @@ namespace BPSLib.Parser.File
 					}
 				}
 				// if is key
-				else if (char.IsLetter(_curChar) || _curChar.Equals("_"))
+				else if (char.IsLetter(_curChar) || _curChar.Equals('_'))
 				{
 					var lexeme = _curChar.ToString();
 					NextChar();
 
-					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals("_") || char.IsLetterOrDigit(_curChar)))
+					while (!EndOfInput() && !_curChar.Equals(Symbols.COLON) && (_curChar.Equals('_') || char.IsLetterOrDigit(_curChar)))
 					{
 						lexeme += _curChar;
 						NextChar();
