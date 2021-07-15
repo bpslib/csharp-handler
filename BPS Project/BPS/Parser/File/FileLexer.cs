@@ -219,7 +219,7 @@ namespace BPSLib.Parser.File
 						lexeme += _curChar;
 						NextChar();
 					}
-					_curIndex--;
+					PreviousChar();
 					Tokens.Add(new Token(TokenCategory.KEY, lexeme));
 				}
 				else

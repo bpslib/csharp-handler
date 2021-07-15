@@ -23,19 +23,19 @@ namespace Tester
 
 				var file = new BPSFile();
 
-				file.Add("name", "Carlos Machado");
-				file.Add("age", 26);
-				file.Add("height", 1.93);
-				file.Add("playVideoGame", false);
-				file.Add("wichGames", new List<object> { });
-				file.Add("favoriteVideoGame", null);
+				file.Set("name", "Carlos Machado");
+				file.Set("age", 26);
+				file.Set("height", 1.93);
+				file.Set("playVideoGame", false);
+				file.Set("wichGames", new List<object> { });
+				file.Set("favoriteVideoGame", null);
 
 				file.Save(saveLoad);
 
 				file = BPS.Load(saveLoad);
-				file.Add("playVideoGame", true);
-				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
-				file.Add("favoriteVideoGame", "OSRS");
+				file.Set("playVideoGame", true);
+				file.Set("wichGames", new List<object> { "BDO", "OSRS", "PW" });
+				file.Set("favoriteVideoGame", "OSRS");
 
 				file.Save(saveLoad);
 			}

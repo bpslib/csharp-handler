@@ -152,7 +152,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, value);
+				BPSFile.Set(_key, value);
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, value);
+				BPSFile.Set(_key, value);
 			}
 		}
 
@@ -180,7 +180,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, value);
+				BPSFile.Set(_key, value);
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, true);
+				BPSFile.Set(_key, true);
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, false);
+				BPSFile.Set(_key, false);
 			}
 		}
 
@@ -219,7 +219,7 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, null);
+				BPSFile.Set(_key, null);
 			}
 		}
 
@@ -249,7 +249,7 @@ namespace BPSLib.Parser.File
 			else
 			{
 				_context = CONTEXT_KEY;
-				BPSFile.Add(_key, _arrStack.Pop());
+				BPSFile.Set(_key, _arrStack.Pop());
 			}
 		}
 

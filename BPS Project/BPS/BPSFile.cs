@@ -94,7 +94,7 @@ namespace BPSLib
 		/// <param name="key">the key to represents the value.</param>
 		/// <param name="value">the value to store.</param>
 		/// <returns>True if it was successful.</returns>
-		public void Add(string key, object value)
+		public void Set(string key, object value)
 		{
 			if (_data.ContainsKey(key))
 			{
@@ -120,8 +120,7 @@ namespace BPSLib
 		/// <returns>Encountered value.</returns>
 		public object Find(string key)
 		{
-			object value;
-			if (_data.TryGetValue(key, out value))
+			if (_data.TryGetValue(key, out object value))
 			{
 				return value;
 			}
