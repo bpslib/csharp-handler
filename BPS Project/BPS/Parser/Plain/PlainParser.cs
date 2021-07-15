@@ -117,7 +117,8 @@ namespace BPSLib.Parser.Plain
 		/// <param name="value">the array value to be parsed.</param>
 		private void ParseArray(object value)
 		{
-			foreach (var v in (List<object>)value)
+			var arr = (List<object>)value;
+			foreach (var v in arr)
 			{
 				if (v.GetType().Equals(typeof(List<object>)))
 				{
@@ -131,7 +132,8 @@ namespace BPSLib.Parser.Plain
 					Plain += ",";
 				}
 			}
-			Plain = Plain.Substring(0, Plain.Length - 1);
+			if (arr.Count > 0)
+				Plain = Plain.Substring(0, Plain.Length - 1);
 		}
 
 		#endregion Private

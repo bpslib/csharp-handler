@@ -15,14 +15,12 @@ namespace BPSLib
 	/// </summary>
     public class BPSFile : IEnumerable<KeyValuePair<string, object>>
 	{
-		// TODO: check if its necessary to interate, if not change to hash table
-
         #region Vars
 
 		/// <summary>
 		/// Internal data structure.
 		/// </summary>
-        internal List<KeyValuePair<string, object>> _data;
+        internal Dictionary<string, object> _data;
 
         #endregion Vars
 
@@ -34,14 +32,14 @@ namespace BPSLib
         /// </summary>
         public BPSFile()
         {
-            _data = new List<KeyValuePair<string, object>>();
+            _data = new Dictionary<string, object>();
         }
 
 		/// <summary>
 		/// Internal constructor to init with data.
 		/// </summary>
 		/// <param name="data">The initialization data.</param>
-        internal BPSFile(List<KeyValuePair<string, object>> data)
+        internal BPSFile(Dictionary<string, object> data)
         {
             _data = data;
         }
@@ -91,19 +89,18 @@ namespace BPSLib
 		}
 
 		/// <summary>
-		/// Add a value in passed key.
+		/// Add or update a value in passed key.
 		/// </summary>
 		/// <param name="key">the key to represents the value.</param>
 		/// <param name="value">the value to store.</param>
 		/// <returns>True if it was successful.</returns>
-		public bool Add(string key, object value)
+		public void Add(string key, object value)
 		{
-            if (!Contains(key))
+			if (_data.ContainsKey(key))
 			{
-				_data.Add(new KeyValuePair<string, object>(key, value));
-				return true;
+				_data.Remove(key);
 			}
-			return false;
+			_data.Add(key, value);
 		}
 
 		/// <summary>
@@ -113,15 +110,7 @@ namespace BPSLib
 		/// <returns>True if was successful.</returns>
 		public bool Remove(string key)
 		{
-			foreach (var d in _data)
-			{
-				if (d.Key.Equals(key))
-				{
-					_data.Remove(d);
-					return true;
-				}
-			}
-			return false;
+			return _data.Remove(key);
 		}
 
 		/// <summary>
@@ -131,12 +120,10 @@ namespace BPSLib
 		/// <returns>Encountered value.</returns>
 		public object Find(string key)
 		{
-			foreach (var d in _data)
+			object value;
+			if (_data.TryGetValue(key, out value))
 			{
-				if (d.Key.Equals(key))
-				{
-					return d.Value;
-				}
+				return value;
 			}
 			return null;
 		}
@@ -165,14 +152,7 @@ namespace BPSLib
 		/// <returns>True if exists.</returns>
 		public bool Contains(string key)
 		{
-            foreach (var d in _data)
-			{
-                if (d.Key.Equals(key))
-				{
-                    return true;
-				}
-			}
-            return false;
+			return _data.ContainsKey(key);
 		}
 
 		public override bool Equals(object obj)

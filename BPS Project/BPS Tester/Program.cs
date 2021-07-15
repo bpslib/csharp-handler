@@ -19,6 +19,7 @@ namespace Tester
 			{
 				var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 				var defaultTestPath = Path.Combine(myDocuments, "BPS_Tests");
+				var saveLoad = Path.Combine(defaultTestPath, "save_load_test");
 
 				var file = new BPSFile();
 
@@ -28,7 +29,13 @@ namespace Tester
 				file.Add("playVideoGame", true);
 				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
 
-				file.Save(Path.Combine(defaultTestPath, "save_load_test"));
+				file.Save(saveLoad);
+
+				file = BPS.Load(saveLoad);
+				file.Add("playVideoGame", false);
+				file.Add("wichGames", new List<object> { });
+
+				file.Save(saveLoad);
 			}
 			catch (Exception e)
 			{
