@@ -65,7 +65,6 @@ namespace BPSLib.Parser.File
 		internal void Parse()
 		{
 			NextChar();
-			// maybe need a refactoring
 			while (!EndOfInput())
 			{
 				// to skip the skip chars
@@ -221,7 +220,7 @@ namespace BPSLib.Parser.File
 				}
 			}
 
-			Tokens.Add(new Token(TokenCategory.EOF, "", -1, -1));
+			Tokens.Add(new Token(TokenCategory.EOF, null, -1, -1));
 		}
 
 		#endregion Public
@@ -258,18 +257,6 @@ namespace BPSLib.Parser.File
 				++_curCollumn;
 			}
 			++_curIndex;
-		}
-
-		/// <summary>
-		/// Get the previous char to <v>_curChar</v>.
-		/// </summary>
-		private void PreviousChar()
-		{
-			if (_curIndex - 2 > 0)
-			{
-				_curChar = _input[--_curIndex - 1];
-				--_curCollumn;
-			}
 		}
 
 		#endregion Private

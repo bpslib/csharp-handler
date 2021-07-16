@@ -249,9 +249,6 @@ namespace BPSLib.Parser.File
 			if (_context == CONSTEXT_ARRAY)
 			{
 				_arrStack.Peek().Add(_value);
-				//NextToken();
-				//ConsumeToken(TokenCategory.ARRAY_SEP);
-				//Value();
 			}
 			else
 			{
@@ -280,7 +277,6 @@ namespace BPSLib.Parser.File
 			if (_arrStack.Count > 1)
 			{
 				_arrStack.Pop();
-				//Value();
 			}
 			else
 			{
@@ -289,7 +285,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		// parser constrols
+		// parser controls
 
 		private void NextToken()
 		{
