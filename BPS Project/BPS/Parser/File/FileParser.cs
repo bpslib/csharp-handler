@@ -90,18 +90,16 @@ namespace BPSLib.Parser.File
 
 		private void Start()
 		{
-			Key();
+			NextToken();
+			Statement();
 			ConsumeToken(TokenCategory.EOF);
 		}
 
-		private void Key()
+		private void Statement()
 		{
-			NextToken();
 			switch (_curToken.Category)
 			{
 				case TokenCategory.KEY:
-					_key = _curToken.Image;
-					Value();
 					Key();
 					break;
 				default:
@@ -109,16 +107,24 @@ namespace BPSLib.Parser.File
 			}
 		}
 
+		private void Key()
+		{
+			_key = _curToken.Image;
+			NextToken();
+			ConsumeToken(TokenCategory.DATA_SEP);
+			Value();
+			ConsumeToken(TokenCategory.END_OF_DATA);
+			Statement();
+		}
+
 		private void Value()
 		{
-			NextToken();
 			switch (_curToken.Category)
 			{
 				case TokenCategory.OPEN_ARRAY:
 					OpenArray();
-					break;
-				case TokenCategory.CLOSE_ARRAY:
-					CloseArray();
+					NextToken();
+					Array();
 					break;
 				case TokenCategory.STRING:
 					String();
@@ -143,53 +149,115 @@ namespace BPSLib.Parser.File
 			}
 		}
 
+		private void Array()
+		{
+			switch (_curToken.Category)
+			{
+				case TokenCategory.OPEN_ARRAY:
+					OpenArray();
+					NextToken();
+					Array();
+					break;
+				case TokenCategory.STRING:
+					String();
+					ArraySel();
+					break;
+				case TokenCategory.CHAR:
+					Char();
+					ArraySel();
+					break;
+				case TokenCategory.INTEGER:
+					Integer();
+					ArraySel();
+					break;
+				case TokenCategory.FLOAT:
+					Float();
+					ArraySel();
+					break;
+				case TokenCategory.BOOL:
+					Bool();
+					ArraySel();
+					break;
+				case TokenCategory.NULL:
+					Null();
+					ArraySel();
+					break;
+				default:
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+			}
+		}
+
+		private void ArraySel()
+		{
+			switch (_curToken.Category)
+			{
+				case TokenCategory.ARRAY_SEP:
+					NextToken();
+					Array();
+					break;
+				case TokenCategory.CLOSE_ARRAY:
+					CloseArray();
+					NextToken();
+					ArraySel();
+					break;
+				case TokenCategory.END_OF_DATA:
+				case TokenCategory.EOF:
+					break;
+				default:
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+			}
+		}
+
 		private void String()
 		{
 			_value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
-			DefaultValue();
+			SetValue();
 		}
 
 		private void Char()
 		{
 			_value = char.Parse(_curToken.Image.Substring(1, _curToken.Image.Length - 2).Replace("\\", string.Empty));
-			DefaultValue();
+			SetValue();
 		}
 
 		private void Integer()
 		{
 			_value = int.Parse(_curToken.Image);
-			DefaultValue();
+			SetValue();
 		}
 
 		private void Float()
 		{
 			_value = float.Parse(_curToken.Image);
-			DefaultValue();
+			SetValue();
 		}
 
 		private void Bool()
 		{
 			_value = bool.Parse(_curToken.Image);
-			DefaultValue();
+			SetValue();
 		}
 
 		private void Null()
 		{
 			_value = null;
-			DefaultValue();
+			SetValue();
 		}
 
-		private void DefaultValue()
+		private void SetValue()
 		{
 			if (_context == CONSTEXT_ARRAY)
 			{
 				_arrStack.Peek().Add(_value);
-				Value();
+				//NextToken();
+				//ConsumeToken(TokenCategory.ARRAY_SEP);
+				//Value();
 			}
 			else
 			{
 				BPSFile.Add(_key, _value);
 			}
+			NextToken();
 		}
 
 		private void OpenArray()
@@ -205,7 +273,6 @@ namespace BPSLib.Parser.File
 				_arrStack.Peek().Add(newD);
 				_arrStack.Push(newD);
 			}
-			Value();
 		}
 
 		private void CloseArray()
@@ -213,7 +280,7 @@ namespace BPSLib.Parser.File
 			if (_arrStack.Count > 1)
 			{
 				_arrStack.Pop();
-				Value();
+				//Value();
 			}
 			else
 			{

@@ -21,6 +21,9 @@ namespace BPSLib.Parser.File
 		FLOAT       = 6,
 		BOOL        = 7,
 		OPEN_ARRAY  = 8,
-		CLOSE_ARRAY = 9
+		CLOSE_ARRAY = 9,
+		END_OF_DATA = 10,
+		DATA_SEP    = 11,
+		ARRAY_SEP   = 12
 	}
 }

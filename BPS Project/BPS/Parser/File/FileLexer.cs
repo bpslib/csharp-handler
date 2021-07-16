@@ -28,8 +28,8 @@ namespace BPSLib.Parser.File
 		private readonly string _input = "";
 		private char _curChar;
 		private int _curIndex = 0;
-		private int _curLine = 0;
-		private int _curCollumn = -1;
+		private int _curLine = 1;
+		private int _curCollumn = 0;
 
 
 		#region Constructors
@@ -64,11 +64,10 @@ namespace BPSLib.Parser.File
 		/// </summary>
 		internal void Parse()
 		{
+			NextChar();
 			// maybe need a refactoring
 			while (!EndOfInput())
 			{
-				NextChar();
-
 				// to skip the skip chars
 				if (Symbols.IsSkip(_curChar))
 				{
@@ -76,6 +75,7 @@ namespace BPSLib.Parser.File
 					{
 						NextLine();
 					}
+					NextChar();
 					continue;
 				}
 
@@ -87,12 +87,13 @@ namespace BPSLib.Parser.File
 						NextChar();
 					}
 					NextLine();
+					NextChar();
 				}
-				// if is key
+				// key, boolean or null
 				else if (char.IsLetter(_curChar) || _curChar.Equals('_'))
 				{
-					var initCol = _curCollumn;
 					var lexeme = _curChar.ToString();
+					var initCol = _curCollumn;
 					NextChar();
 
 					// loops the key
@@ -101,145 +102,117 @@ namespace BPSLib.Parser.File
 						lexeme += _curChar;
 						NextChar();
 					}
-					Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
 
-					// check if current char is colon before read data
-					if (!_curChar.Equals(Symbols.COLON))
+					// true, false or null
+					if (lexeme.Equals("true") || lexeme.Equals("false") || lexeme.Equals("null"))
 					{
-						throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
+						Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
 					}
-
-					// value
-					while (!EndOfInput() && !_curChar.Equals(Symbols.SEMICOLON))
+					// key
+					else
 					{
+						Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
+					}
+				}
+				// open array
+				else if (_curChar.Equals(Symbols.LEFT_BRACKETS))
+				{
+					Tokens.Add(new Token(TokenCategory.OPEN_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
+					NextChar();
+				}
+				// close array
+				else if (_curChar.Equals(Symbols.RIGHT_BRACKETS))
+				{
+					Tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
+					NextChar();
+				}
+				// end of data
+				else if (_curChar.Equals(Symbols.SEMICOLON))
+				{
+					Tokens.Add(new Token(TokenCategory.END_OF_DATA, _curChar.ToString(), _curLine, _curCollumn));
+					NextChar();
+				}
+				// array sep
+				else if (_curChar.Equals(Symbols.COMMA))
+				{
+					Tokens.Add(new Token(TokenCategory.ARRAY_SEP, _curChar.ToString(), _curLine, _curCollumn));
+					NextChar();
+				}
+				// data sep
+				else if (_curChar.Equals(Symbols.COLON))
+				{
+					Tokens.Add(new Token(TokenCategory.DATA_SEP, _curChar.ToString(), _curLine, _curCollumn));
+					NextChar();
+				}
+				// string
+				else if (_curChar.Equals(Symbols.DQUOTE))
+				{
+					var lexeme = _curChar.ToString();
+					var initCol = _curCollumn;
+					var beforeChar = _curChar;
+					NextChar();
+					while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
+					{
+						beforeChar = _curChar;
+						lexeme += _curChar;
 						NextChar();
-						// skip comma and verify if there are a duplicated comma (a empty gap)
-						if (_curChar.Equals(Symbols.COMMA))
+					}
+					lexeme += _curChar;
+					Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
+					NextChar();
+				}
+				// char
+				else if (_curChar.Equals(Symbols.QUOTE))
+				{
+					var lexeme = _curChar.ToString();
+					var initCol = _curCollumn;
+					NextChar();
+					if (_curChar.Equals('\\'))
+					{
+						lexeme += _curChar;
+						NextChar();
+					}
+					lexeme += _curChar;
+					NextChar();
+					if (!_curChar.Equals(Symbols.QUOTE))
+					{
+						throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
+					}
+					lexeme += _curChar;
+					Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, initCol));
+					NextChar();
+				}
+				// numeric
+				else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
+				{
+					var lexeme = _curChar.ToString();
+					var initCol = _curCollumn;
+					var dotted = _curChar.Equals(Symbols.DOT);
+					NextChar();
+					while (!EndOfInput() && (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT)))
+					{
+						if (_curChar.Equals(Symbols.DOT))
 						{
-							NextChar();
-							if (_curChar.Equals(Symbols.COMMA))
+							if (dotted)
 							{
-								throw new Exception("Double comma encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
-							}
-						}
-						// to skip the skip chars
-						while (!EndOfInput() && Symbols.IsSkip(_curChar))
-						{
-							NextChar();
-						}
-						// semicolon indicates the end of value
-						if (_curChar.Equals(Symbols.SEMICOLON))
-						{
-							break;
-						}
-						lexeme = _curChar.ToString();
-
-						// open array
-						if (_curChar.Equals(Symbols.LEFT_BRACKETS))
-						{
-							Tokens.Add(new Token(TokenCategory.OPEN_ARRAY, lexeme, _curLine, _curCollumn));
-						}
-						// close array
-						else if (_curChar.Equals(Symbols.RIGHT_BRACKETS))
-						{
-							Tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, lexeme, _curLine, _curCollumn));
-						}
-						// is a value
-						else
-						{
-							// string
-							if (_curChar.Equals(Symbols.DQUOTE))
-							{
-								initCol = _curCollumn;
-								var beforeChar = _curChar;
-								NextChar();
-								while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
-								{
-									beforeChar = _curChar;
-									lexeme += _curChar;
-									NextChar();
-								}
-								lexeme += _curChar;
-								Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
-							}
-							// char
-							else if (_curChar.Equals(Symbols.QUOTE))
-							{
-								initCol = _curCollumn;
-								NextChar();
-								if (_curChar.Equals('\\'))
-								{
-									lexeme += _curChar;
-									NextChar();
-								}
-								lexeme += _curChar;
-								NextChar();
-								if (!_curChar.Equals(Symbols.QUOTE))
-								{
-									throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
-								}
-								lexeme += _curChar;
-								Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, initCol));
-							}
-							// numeric
-							else if (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT) || _curChar.Equals(Symbols.MINUS))
-							{
-								initCol = _curCollumn;
-								var dotted = _curChar.Equals(Symbols.DOT);
-								NextChar();
-								while (!EndOfInput() && (char.IsDigit(_curChar) || _curChar.Equals(Symbols.DOT)))
-								{
-									if (_curChar.Equals(Symbols.DOT))
-									{
-										if (dotted)
-										{
-											throw new Exception("Double dot encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
-										}
-										else
-										{
-											dotted = true;
-										}
-									}
-									lexeme += _curChar;
-									NextChar();
-								}
-								// float or int
-								if (lexeme.Contains(Symbols.DOT.ToString()))
-								{
-									Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
-								}
-								else
-								{
-									Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
-								}
-								//PreviousChar();
-							}
-							// boolean or null
-							else if (_curChar.Equals('t') || _curChar.Equals('f') || _curChar.Equals('n'))
-							{
-								initCol = _curCollumn;
-								NextChar();
-								while (!EndOfInput() && char.IsLetter(_curChar))
-								{
-									lexeme += _curChar;
-									NextChar();
-								}
-								// true, false or null
-								if (lexeme.Equals("true") || lexeme.Equals("false") || lexeme.Equals("null"))
-								{
-									Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
-								}
-								else
-								{
-									throw new Exception("Invalid value: '" + lexeme + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ". Expected: 'true', 'false' or 'null'.");
-								}
-								//PreviousChar();
+								throw new Exception("Double dot encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 							}
 							else
 							{
-								throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
+								dotted = true;
 							}
 						}
+						lexeme += _curChar;
+						NextChar();
+					}
+					// float or int
+					if (lexeme.Contains(Symbols.DOT.ToString()))
+					{
+						Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
+					}
+					else
+					{
+						Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
 					}
 				}
 				else
@@ -262,7 +235,7 @@ namespace BPSLib.Parser.File
 		/// <returns>True if is in the end.</returns>
 		private bool EndOfInput()
 		{
-			return _curIndex >= _input.Length;
+			return _curIndex > _input.Length;
 		}
 
 		/// <summary>
@@ -271,7 +244,7 @@ namespace BPSLib.Parser.File
 		private void NextLine()
 		{
 			++_curLine;
-			_curCollumn = -1;
+			_curCollumn = 0;
 		}
 
 		/// <summary>
@@ -281,9 +254,10 @@ namespace BPSLib.Parser.File
 		{
 			if (_curIndex < _input.Length)
 			{
-				_curChar = _input[_curIndex++];
+				_curChar = _input[_curIndex];
 				++_curCollumn;
 			}
+			++_curIndex;
 		}
 
 		/// <summary>

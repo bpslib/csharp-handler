@@ -15,7 +15,7 @@ boolFalse:false;
 
 # Vector
 stringArr:["yes", "no", "maybe"];
-chargArr:['a', 'b', 'c'];
+charArr:['a', 'b', 'c'];
 intArr:[0, 1, 2, 10, -5];
 floatArr:[0.9, 1.7, -0.2, 1.06, -5.618];
 boolArr:[true, false, true];
