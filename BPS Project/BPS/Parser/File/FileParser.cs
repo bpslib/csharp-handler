@@ -145,7 +145,7 @@ namespace BPSLib.Parser.File
 					Null();
 					break;
 				default:
-					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected a value or array.");
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace BPSLib.Parser.File
 					ArraySel();
 					break;
 				default:
-					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected a value or array.");
 			}
 		}
 
@@ -204,7 +204,7 @@ namespace BPSLib.Parser.File
 				case TokenCategory.EOF:
 					break;
 				default:
-					throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected ',' or ']'.");
 			}
 		}
 
@@ -299,7 +299,7 @@ namespace BPSLib.Parser.File
 		{
 			if (!_curToken.Category.Equals(category))
 			{
-				throw new Exception("Invalid token '" + _curToken.Image + "' encountered.");
+				throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected " + TokenImages.TOKEN_IMAGE[(int)category] + ".");
 			}
 			NextToken();
 		}

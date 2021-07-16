@@ -216,7 +216,7 @@ namespace BPSLib.Parser.File
 				}
 				else
 				{
-					throw new Exception("Invalid character: '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
+					throw new Exception("Invalid character '" + _curChar + "' encountered at line " + _curLine + " and collumn " + _curCollumn + ".");
 				}
 			}
 

@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Carlos Machado</Authors>
+    <AssemblyName>BPSLib</AssemblyName>
+    <RootNamespace>BPSLib</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
