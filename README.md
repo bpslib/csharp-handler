@@ -1,8 +1,8 @@
-# BPS - Basic Persistence System
+# BPS Handler
 
-BPS is a key-value persistence system that provides a data structure that allows to save and load from disk.
+BPS is a key-value data storing structure. This handler provides a BPS data structure for C#.
 
 
 ## Guides and Documentation
 
-The documentation of BPS is [here](https://bps-lib.github.io/). It contains all guides and detailed documentation.
+The documentation of BPS and this handler can be found [here](https://bps-lib.github.io/). It contains all guides and detailed documentation.
