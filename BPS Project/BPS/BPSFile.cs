@@ -5,6 +5,7 @@
  *
  */
 
+using BPSLib.Util;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,7 +19,13 @@ namespace BPSLib
 		/// <summary>
 		/// Internal data structure.
 		/// </summary>
-		internal Dictionary<string, object> _data;
+		internal Dictionary<string, object> Data { get; set; }
+
+		/// <summary>
+		/// File path.
+		/// </summary>
+		private string _path;
+		public string Path { get => _path; set => _path = BPSPath.NormalizePath(value); }
 
 
 		#region Constructors
@@ -28,16 +35,17 @@ namespace BPSLib
 		/// </summary>
 		public BPSFile()
 		{
-			_data = new Dictionary<string, object>();
+			Data = new Dictionary<string, object>();
+			Path = "";
 		}
 
 		/// <summary>
-		/// Internal constructor to init with data.
+		/// Path constructor.
 		/// </summary>
-		/// <param name="data">The initialization data.</param>
-		internal BPSFile(Dictionary<string, object> data)
+		public BPSFile(string path)
 		{
-			_data = data;
+			Data = new Dictionary<string, object>();
+			Path = BPSPath.NormalizePath(path);
 		}
 
 		#endregion Constructors
@@ -48,31 +56,11 @@ namespace BPSLib
 		#region Public
 
 		/// <summary>
-		/// Read a BPS file from path.
-		/// </summary>
-		/// <param name="path">file path with or not extension.</param>
-		/// <returns>Readed file.</returns>
-		public void Load(string path)
-		{
-			_data = BPS.Load(path)._data;
-		}
-
-		/// <summary>
 		/// Write self on passed path.
 		/// </summary>
-		/// <param name="path">Save path with or not extension</param>
-		public void Save(string path)
+		public void Save()
 		{
-			BPS.Save(this, path);
-		}
-
-		/// <summary>
-		/// Parse a plain string data and overwrites self.
-		/// </summary>
-		/// <param name="data">data in string format.</param>
-		public void Parse(string data)
-		{
-			_data = BPS.Parse(data)._data;
+			BPS.Save(this);
 		}
 
 		/// <summary>
@@ -92,11 +80,11 @@ namespace BPSLib
 		/// <returns>True if it was successful.</returns>
 		public void Add(string key, object value)
 		{
-			if (_data.ContainsKey(key))
+			if (Data.ContainsKey(key))
 			{
-				_data.Remove(key);
+				Data.Remove(key);
 			}
-			_data.Add(key, value);
+			Data.Add(key, value);
 		}
 
 		/// <summary>
@@ -106,7 +94,7 @@ namespace BPSLib
 		/// <returns>True if was successful.</returns>
 		public bool Remove(string key)
 		{
-			return _data.Remove(key);
+			return Data.Remove(key);
 		}
 
 		/// <summary>
@@ -116,7 +104,7 @@ namespace BPSLib
 		/// <returns>Encountered value.</returns>
 		public object Find(string key)
 		{
-			if (_data.TryGetValue(key, out object value))
+			if (Data.TryGetValue(key, out object value))
 			{
 				return value;
 			}
@@ -129,7 +117,7 @@ namespace BPSLib
 		/// <returns>The element count.</returns>
 		public int Count()
 		{
-			return _data.Count;
+			return Data.Count;
 		}
 
 		/// <summary>
@@ -137,7 +125,7 @@ namespace BPSLib
 		/// </summary>
 		public void Clear()
 		{
-			_data.Clear();
+			Data.Clear();
 		}
 
 		/// <summary>
@@ -147,7 +135,30 @@ namespace BPSLib
 		/// <returns>True if exists.</returns>
 		public bool Contains(string key)
 		{
-			return _data.ContainsKey(key);
+			return Data.ContainsKey(key);
+		}
+
+		/// <summary>
+		/// Get the name of file with extension.
+		/// </summary>
+		/// <returns>File name.</returns>
+		public string GetFullName()
+		{
+			return Path.Remove(0, Path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1);
+		}
+
+		/// <summary>
+		/// Get the name of file.
+		/// </summary>
+		/// <returns>File name.</returns>
+		public string GetName()
+		{
+			return BPSPath.RemoveExtension(Path.Remove(0, Path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1));
+		}
+
+		public string GetPath()
+		{
+			return Path.Remove(Path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1);
 		}
 
 		public override bool Equals(object obj)
@@ -166,7 +177,7 @@ namespace BPSLib
 		public override int GetHashCode()
 		{
 			var hash = 7;
-			foreach (var d in _data)
+			foreach (var d in Data)
 			{
 				hash = hash * 31 + d.GetHashCode();
 			}
@@ -175,12 +186,12 @@ namespace BPSLib
 
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
 		{
-			return ((IEnumerable<KeyValuePair<string, object>>)_data).GetEnumerator();
+			return ((IEnumerable<KeyValuePair<string, object>>)Data).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return ((IEnumerable)_data).GetEnumerator();
+			return ((IEnumerable)Data).GetEnumerator();
 		}
 
 		#endregion Public

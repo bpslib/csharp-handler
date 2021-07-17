@@ -5,6 +5,7 @@
  *
  */
 
+using BPSLib.Util;
 using System;
 using System.IO;
 
@@ -15,12 +16,6 @@ namespace BPSLib
 	/// </summary>
 	public class BPS
 	{
-		/// <summary>
-		/// Document file extension.
-		/// </summary>
-		internal const string BPS_FILE_EXTENSION = ".bps";
-
-
 		#region Methods
 
 		#region Public
@@ -35,7 +30,7 @@ namespace BPSLib
 			string data;
 			try
 			{
-				var sr = new StreamReader(NormalizePath(path));
+				var sr = new StreamReader(BPSPath.NormalizePath(path));
 				data = sr.ReadToEnd();
 				sr.Close();
 			}
@@ -43,19 +38,20 @@ namespace BPSLib
 			{
 				throw ex;
 			}
-			return Parse(data);
+			var file = Parse(data);
+			file.Path = path;
+			return file;
 		}
 
 		/// <summary>
 		/// Write a BPS file on path.
 		/// </summary>
 		/// <param name="file">the file to be write.</param>
-		/// <param name="path">save path with or not extension.</param>
-		public static void Save(BPSFile file, string path)
+		public static void Save(BPSFile file)
 		{
 			try
 			{
-				var normalizedPath = NormalizePath(path);
+				var normalizedPath = BPSPath.NormalizePath(file.Path);
 				Directory.CreateDirectory(normalizedPath.Remove(normalizedPath.LastIndexOf(Path.DirectorySeparatorChar)));
 				var sw = new StreamWriter(normalizedPath);
 				sw.WriteLine(Plain(file));
@@ -94,15 +90,6 @@ namespace BPSLib
 		#endregion Public
 
 		#region Private
-
-		/// <summary>
-		/// Insert BPS extension on filename.
-		/// </summary>
-		/// <param name="path">the path.</param>
-		private static string NormalizePath(string path)
-		{
-			return path.EndsWith(BPS_FILE_EXTENSION) ? path : path + BPS_FILE_EXTENSION;
-		}
 
 		#endregion Private
 

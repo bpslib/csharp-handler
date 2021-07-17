@@ -1,6 +1,0 @@
-BPS
-will load, parse, save and plain
-
-BPSFile
-just will save and plain
-will contain the path
