@@ -204,7 +204,7 @@ namespace BPSLib.Parser.File
 				case TokenCategory.EOF:
 					break;
 				default:
-					throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected ',' or ']'.");
+					throw new Exception("Invalid token '" + _curToken.Image + "' encountered at line " + _curToken.Line + " and collumn " + _curToken.Collumn + ". Expected ',', ']' or ';'.");
 			}
 		}
 

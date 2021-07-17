@@ -17,8 +17,6 @@ namespace BPSLib.Parser.File
 	/// </summary>
 	internal class FileLexer
 	{
-		//TODO: add semicolon token
-
 		/// <summary>
 		/// Generated list of tokens.
 		/// </summary>
