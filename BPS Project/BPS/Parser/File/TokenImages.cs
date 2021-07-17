@@ -11,6 +11,7 @@
 			"char constant",
 			"integer constant",
 			"float constant",
+			"double constant",
 			"bool constant",
 			"[",
 			"]",

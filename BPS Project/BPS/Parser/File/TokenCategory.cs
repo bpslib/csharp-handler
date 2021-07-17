@@ -19,11 +19,12 @@ namespace BPSLib.Parser.File
 		CHAR        = 4,
 		INTEGER     = 5,
 		FLOAT       = 6,
-		BOOL        = 7,
-		OPEN_ARRAY  = 8,
-		CLOSE_ARRAY = 9,
-		END_OF_DATA = 10,
-		DATA_SEP    = 11,
-		ARRAY_SEP   = 12
+		DOUBLE      = 7,
+		BOOL        = 8,
+		OPEN_ARRAY  = 9,
+		CLOSE_ARRAY = 10,
+		END_OF_DATA = 11,
+		DATA_SEP    = 12,
+		ARRAY_SEP   = 13
 	}
 }

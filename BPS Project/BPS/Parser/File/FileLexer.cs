@@ -202,8 +202,17 @@ namespace BPSLib.Parser.File
 						lexeme += _curChar;
 						NextChar();
 					}
-					// float or int
-					if (lexeme.Contains(Symbols.DOT.ToString()))
+					if (_curChar.Equals('f') || _curChar.Equals('F') || _curChar.Equals('d') || _curChar.Equals('D'))
+					{
+						lexeme += _curChar;
+						NextChar();
+					}
+					// float, double or int
+					if (lexeme.Contains("d") || _curChar.Equals('D'))
+					{
+						Tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
+					}
+					else if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.Contains("f") || _curChar.Equals('F'))
 					{
 						Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
 					}

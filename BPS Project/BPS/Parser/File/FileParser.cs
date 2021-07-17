@@ -138,6 +138,10 @@ namespace BPSLib.Parser.File
 				case TokenCategory.FLOAT:
 					Float();
 					break;
+				case TokenCategory.DOUBLE:
+					Double();
+					ArraySel();
+					break;
 				case TokenCategory.BOOL:
 					Bool();
 					break;
@@ -172,6 +176,10 @@ namespace BPSLib.Parser.File
 					break;
 				case TokenCategory.FLOAT:
 					Float();
+					ArraySel();
+					break;
+				case TokenCategory.DOUBLE:
+					Double();
 					ArraySel();
 					break;
 				case TokenCategory.BOOL:
@@ -228,7 +236,15 @@ namespace BPSLib.Parser.File
 
 		private void Float()
 		{
-			_value = float.Parse(_curToken.Image);
+			var strValue = _curToken.Image.EndsWith("f") || _curToken.Image.EndsWith("F") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
+			_value = float.Parse(strValue);
+			SetValue();
+		}
+
+		private void Double()
+		{
+			var strValue = _curToken.Image.EndsWith("d") || _curToken.Image.EndsWith("D") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
+			_value = double.Parse(strValue);
 			SetValue();
 		}
 
