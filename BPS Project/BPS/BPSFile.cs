@@ -25,7 +25,7 @@ namespace BPSLib
 		/// File path.
 		/// </summary>
 		private string _path;
-		public string Path { get => _path; set => _path = BPSPath.NormalizePath(value); }
+		public string Path { get => _path; set => _path = BPSPath.Normalize(value); }
 
 
 		#region Constructors
@@ -45,7 +45,7 @@ namespace BPSLib
 		public BPSFile(string path)
 		{
 			Data = new Dictionary<string, object>();
-			Path = BPSPath.NormalizePath(path);
+			Path = BPSPath.Normalize(path);
 		}
 
 		#endregion Constructors

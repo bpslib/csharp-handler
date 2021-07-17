@@ -54,11 +54,11 @@
     <Compile Include="Parser\File\FileParserTest.cs" />
     <Compile Include="Parser\Plain\PlainParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\BPSPathTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BPS\BPS.csproj">
       <Project>{92bd51d3-681b-48a3-a186-c5db05968b1c}</Project>

@@ -11,7 +11,7 @@
 		/// Insert BPS extension on filename.
 		/// </summary>
 		/// <param name="path">the normalized path.</param>
-		internal static string NormalizePath(string path)
+		internal static string Normalize(string path)
 		{
 			return path.EndsWith(BPS_FILE_EXTENSION) ? path : path + BPS_FILE_EXTENSION;
 		}

@@ -30,7 +30,7 @@ namespace BPSLib
 			string data;
 			try
 			{
-				var sr = new StreamReader(BPSPath.NormalizePath(path));
+				var sr = new StreamReader(BPSPath.Normalize(path));
 				data = sr.ReadToEnd();
 				sr.Close();
 			}
@@ -51,7 +51,7 @@ namespace BPSLib
 		{
 			try
 			{
-				var normalizedPath = BPSPath.NormalizePath(file.Path);
+				var normalizedPath = BPSPath.Normalize(file.Path);
 				Directory.CreateDirectory(normalizedPath.Remove(normalizedPath.LastIndexOf(Path.DirectorySeparatorChar)));
 				var sw = new StreamWriter(normalizedPath);
 				sw.WriteLine(Plain(file));
