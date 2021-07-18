@@ -41,8 +41,8 @@ public void Foo()
 
 #### Finding and checking if data exists
 
-To retrieve a data we use the function `Find()` passing the key we want to retrieve. To check if a data exists in file, we use the function `Contains()` passing the just key too.
-We do not need to check if a data exists before retrieve that, once we try to retrieve a no existence data, we will receive a null value. 
+To retrieve a value we use the function `Find()` passing the key we want to retrieve. To check if a value exists in the file, we use the function `Contains()` passing the just key too.
+We do not need to check if a value exists before retrieve that, once we try to retrieve a no existing value, we will receive a null return.
 
 ```csharp
 public void Foo(BPSFile file)
@@ -66,22 +66,11 @@ public void Foo(BPSFile file)
 }
 ```
 
-#### Other operations
-
-
-
-```csharp
-public void Foo(BPSFile file)
-{
-    
-}
-```
-
 ### BPS Class
 
 #### Disk operations
 
-To save the file on disk, we use the function `Save()`. There are two ways to use this function. The first one is using the class `BPS`, where we call the `Save()` function passing the `BPSFile` object and the path. 
+To save the file on disk, we use the function `Save()`. There are two ways to use this function. The first one is using the class `BPS`, where we call the `Save()` function passing the `BPSFile` object and the path.
 
 ```csharp
 public void Foo(string path)
@@ -92,5 +81,22 @@ public void Foo(string path)
     file.Add("string", "example");
     // Saving new file
     BPS.Save(file, path);
+}
+```
+
+#### Parsing operations
+
+The `BPS` class has two methods to transform data. The method `Parse()` will parse a string containing data in BPS notation. The method `Plain()` will parse a `BPSFile` in a string containing the data in BPS notation.
+
+```csharp
+public void Foo()
+{
+    string bpsNotationData = "intValue:256;";
+
+    // Parsing a string in a BPSFile
+    BPSFile file = BPS.Parse(bpsNotationData);
+    
+    // Writing in the console a string representation of a BPSFile
+    Console.WriteLine(file);
 }
 ```
