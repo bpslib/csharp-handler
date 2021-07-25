@@ -100,10 +100,15 @@ namespace BPSLib.Parser.File
 						NextChar();
 					}
 
-					// true, false or null
-					if (lexeme.Equals("true") || lexeme.Equals("false") || lexeme.Equals("null"))
+					// true or false
+					if (lexeme.Equals("true") || lexeme.Equals("false"))
 					{
 						Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
+					}
+					// null
+					else if (lexeme.Equals("null"))
+					{
+						Tokens.Add(new Token(TokenCategory.NULL, lexeme, _curLine, initCol));
 					}
 					// key
 					else
