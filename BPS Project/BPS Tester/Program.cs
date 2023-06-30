@@ -5,54 +5,59 @@ using System.IO;
 
 namespace Tester
 {
-	class Program
+    class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
-			Test();
-			//SaveLoadTest();
-		}
+            var path = "C:\\temp\\file.bps";
 
-		static void SaveLoadTest()
-		{
-			try
-			{
-				var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-				var defaultTestPath = Path.Combine(myDocuments, "BPS_Tests");
-				var saveLoad = Path.Combine(defaultTestPath, "save_load_test");
+            Dictionary<string, object> data = new Dictionary<string, object>();
 
-				var file = new BPSFile(saveLoad);
+			data.Add("test", 10);
+			//data.TryGetValue("test", out object testData);
+            //Console.WriteLine(testData);
+			data.TryAdd("test2", "lol");
+            //data.TryGetValue("test", out testData);
+            //Console.WriteLine(testData);
+            data.Add("asd", null);
 
-				file.Add("name", "Carlos Machado");
-				file.Add("age", 26);
-				file.Add("height", 1.93);
-				file.Add("playVideoGame", false);
-				file.Add("wichGames", new List<object> { });
-				file.Add("favoriteVideoGame", null);
+            Save(path, BPS.Plain(data));
 
-				file.Save();
+            var parsedData = BPS.Parse(Load(path));
 
-				file = BPS.Load(saveLoad);
-				file.Add("playVideoGame", true);
-				file.Add("wichGames", new List<object> { "BDO", "OSRS", "PW" });
-				file.Add("favoriteVideoGame", "OSRS");
+            Console.WriteLine(string.Join(Environment.NewLine, parsedData));
+        }
 
-				file.Save();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-		}
+        public static string Load(string path)
+        {
+            string data;
+            try
+            {
+                var sr = new StreamReader(path);
+                data = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return data;
+        }
 
-		static void Test()
-		{
-			var file = BPS.Load("..\\..\\..\\..\\..\\docs\\examples\\all_data_structures.bps");
-			//Console.WriteLine(file.Path);
-			//Console.WriteLine(file.GetName());
-			//Console.WriteLine(file.GetFullName());
-			//Console.WriteLine(file.GetPath());
-			Console.WriteLine(file.Plain() + "\n");
-		}
-	}
+        public static void Save(string path, string data)
+        {
+            try
+            {
+                Directory.CreateDirectory(path.Remove(path.LastIndexOf(Path.DirectorySeparatorChar)));
+                var sw = new StreamWriter(path);
+                sw.Write(data);
+                sw.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+    }
 }

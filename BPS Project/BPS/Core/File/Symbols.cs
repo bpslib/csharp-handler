@@ -1,4 +1,5 @@
-﻿/*
+﻿/**
+ * 
  * MIT License
  *
  * Copyright (c) 2021 Carlos Eduardo de Borba Machado
@@ -7,11 +8,8 @@
 
 using System.Linq;
 
-namespace BPSLib.Parser.File
+namespace BPSLib.Core.File
 {
-	/// <summary>
-	/// Class <c>Symbols</c> contains common language symbols.
-	/// </summary>
 	internal class Symbols
 	{
 		internal const char HASH           = '#';
@@ -26,13 +24,15 @@ namespace BPSLib.Parser.File
 		internal const char SPACE          = ' ';
 		internal const char QUOTE          = '\'';
 		internal const char NEWLINE        = '\n';
-		internal const char TAB            = '\t';
+        internal const char RETURN         = '\r';
+        internal const char TAB            = '\t';
 
 		internal static readonly char[] Skip =
 		{
 			SPACE,
 			TAB,
-			NEWLINE
+			NEWLINE,
+			RETURN
 		};
 
 		internal static bool IsSkip(char c)

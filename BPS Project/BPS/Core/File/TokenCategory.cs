@@ -1,15 +1,13 @@
-﻿/*
+﻿/**
+ * 
  * MIT License
  *
  * Copyright (c) 2021 Carlos Eduardo de Borba Machado
  *
  */
 
-namespace BPSLib.Parser.File
+namespace BPSLib.Core.File
 {
-	/// <summary>
-	/// Enum <e>TokenCategory</e> contains all token categories.
-	/// </summary>
 	internal enum TokenCategory : ushort
 	{
 		EOF         = 0,

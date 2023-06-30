@@ -1,4 +1,5 @@
-﻿/*
+﻿/**
+ * 
  * MIT License
  *
  * Copyright (c) 2021 Carlos Eduardo de Borba Machado
@@ -7,41 +8,18 @@
 
 using System.Collections.Generic;
 
-namespace BPSLib.Parser.File
+namespace BPSLib.Core.File
 {
-	/// <summary>
-	/// Class <c>Token</c> represents a token in parser.
-	/// </summary>
 	internal class Token
 	{
-		/// <summary>
-		/// Token category.
-		/// </summary>
 		internal TokenCategory Category { get; }
 
-		/// <summary>
-		/// Token string representation.
-		/// </summary>
 		internal string Image { get; }
 
-		/// <summary>
-		/// Line that was encountered.
-		/// </summary>
 		internal int Line { get; }
 
-		/// <summary>
-		/// Collumn that was encountered.
-		/// </summary>
 		internal int Collumn { get; }
 
-
-		#region Contructors
-
-		/// <summary>
-		/// Default <c>Token</c> constructor.
-		/// </summary>
-		/// <param name="category">category.</param>
-		/// <param name="image">string representation.</param>
 		internal Token(TokenCategory category, string image, int line, int collumn)
 		{
 			Category = category;
@@ -68,7 +46,5 @@ namespace BPSLib.Parser.File
 			var imageHash = Image != null ? Image.GetHashCode() : 666;
 			return imageHash * 17 + Category.GetHashCode() * 7 + Line * Collumn;
 		}
-
-		#endregion Constructors
 	}
 }

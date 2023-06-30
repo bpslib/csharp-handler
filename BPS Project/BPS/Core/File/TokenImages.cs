@@ -1,4 +1,12 @@
-﻿namespace BPSLib.Parser.File
+﻿/**
+ * 
+ * MIT License
+ *
+ * Copyright (c) 2021 Carlos Eduardo de Borba Machado
+ *
+ */
+
+namespace BPSLib.Core.File
 {
 	internal class TokenImages
 	{

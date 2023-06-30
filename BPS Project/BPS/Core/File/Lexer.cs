@@ -1,4 +1,5 @@
-﻿/*
+﻿/**
+ * 
  * MIT License
  *
  * Copyright (c) 2021 Carlos Eduardo de Borba Machado
@@ -10,58 +11,23 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BPS UnitTest")]
-namespace BPSLib.Parser.File
+namespace BPSLib.Core.File
 {
-	/// <summary>
-	/// Class <c>FileLexer</c> manage lexical analisys from file parser.
-	/// </summary>
-	internal class FileLexer
+	internal static class Lexer
 	{
-		/// <summary>
-		/// Generated list of tokens.
-		/// </summary>
-		internal List<Token> Tokens { get; }
+		private static readonly List<Token> tokens = new List<Token>();
 
-		// control vars
-		private readonly string _input = "";
-		private char _curChar;
-		private int _curIndex = 0;
-		private int _curLine = 1;
-		private int _curCollumn = 0;
+        // control vars
+        private static string _input = "";
+        private static char _curChar;
+        private static int _curIndex = 0;
+        private static int _curLine = 1;
+        private static int _curCollumn = 0;
 
-
-		#region Constructors
-
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		internal FileLexer()
+		internal static List<Token> Parse(string input)
 		{
-			Tokens = new List<Token>();
-		}
-
-		/// <summary>
-		/// Constructor setting the input.
-		/// </summary>
-		/// <param name="input">the input to be parsed.</param>
-		internal FileLexer(string input)
-		{
-			Tokens = new List<Token>();
 			_input = input;
-		}
 
-		#endregion Constructors
-
-
-		#region Methods
-
-		#region Public
-
-		/// <summary>
-		/// Do the lexical analisys of a BPS string document.
-		/// </summary>
-		internal void Parse()
-		{
 			NextChar();
 			while (!EndOfInput())
 			{
@@ -103,47 +69,47 @@ namespace BPSLib.Parser.File
 					// true or false
 					if (lexeme.Equals("true") || lexeme.Equals("false"))
 					{
-						Tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.BOOL, lexeme, _curLine, initCol));
 					}
 					// null
 					else if (lexeme.Equals("null"))
 					{
-						Tokens.Add(new Token(TokenCategory.NULL, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.NULL, lexeme, _curLine, initCol));
 					}
 					// key
 					else
 					{
-						Tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.KEY, lexeme, _curLine, initCol));
 					}
 				}
 				// open array
 				else if (_curChar.Equals(Symbols.LEFT_BRACKETS))
 				{
-					Tokens.Add(new Token(TokenCategory.OPEN_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
+					tokens.Add(new Token(TokenCategory.OPEN_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
 					NextChar();
 				}
 				// close array
 				else if (_curChar.Equals(Symbols.RIGHT_BRACKETS))
 				{
-					Tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
+					tokens.Add(new Token(TokenCategory.CLOSE_ARRAY, _curChar.ToString(), _curLine, _curCollumn));
 					NextChar();
 				}
 				// end of data
 				else if (_curChar.Equals(Symbols.SEMICOLON))
 				{
-					Tokens.Add(new Token(TokenCategory.END_OF_DATA, _curChar.ToString(), _curLine, _curCollumn));
+					tokens.Add(new Token(TokenCategory.END_OF_DATA, _curChar.ToString(), _curLine, _curCollumn));
 					NextChar();
 				}
 				// array sep
 				else if (_curChar.Equals(Symbols.COMMA))
 				{
-					Tokens.Add(new Token(TokenCategory.ARRAY_SEP, _curChar.ToString(), _curLine, _curCollumn));
+					tokens.Add(new Token(TokenCategory.ARRAY_SEP, _curChar.ToString(), _curLine, _curCollumn));
 					NextChar();
 				}
 				// data sep
 				else if (_curChar.Equals(Symbols.COLON))
 				{
-					Tokens.Add(new Token(TokenCategory.DATA_SEP, _curChar.ToString(), _curLine, _curCollumn));
+					tokens.Add(new Token(TokenCategory.DATA_SEP, _curChar.ToString(), _curLine, _curCollumn));
 					NextChar();
 				}
 				// string
@@ -160,7 +126,7 @@ namespace BPSLib.Parser.File
 						NextChar();
 					}
 					lexeme += _curChar;
-					Tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
+					tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
 					NextChar();
 				}
 				// char
@@ -181,7 +147,7 @@ namespace BPSLib.Parser.File
 						throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
 					}
 					lexeme += _curChar;
-					Tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, initCol));
+					tokens.Add(new Token(TokenCategory.CHAR, lexeme, _curLine, initCol));
 					NextChar();
 				}
 				// numeric
@@ -215,15 +181,15 @@ namespace BPSLib.Parser.File
 					// float, double or int
 					if (lexeme.Contains("d") || _curChar.Equals('D'))
 					{
-						Tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
 					}
 					else if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.Contains("f") || _curChar.Equals('F'))
 					{
-						Tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
 					}
 					else
 					{
-						Tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
+						tokens.Add(new Token(TokenCategory.INTEGER, lexeme, _curLine, initCol));
 					}
 				}
 				else
@@ -232,36 +198,23 @@ namespace BPSLib.Parser.File
 				}
 			}
 
-			Tokens.Add(new Token(TokenCategory.EOF, null, -1, -1));
+			tokens.Add(new Token(TokenCategory.EOF, null, -1, -1));
+
+			return tokens;
 		}
 
-		#endregion Public
-
-
-		#region Private
-
-		/// <summary>
-		/// Verify if the input is in the end.
-		/// </summary>
-		/// <returns>True if is in the end.</returns>
-		private bool EndOfInput()
+        private static bool EndOfInput()
 		{
 			return _curIndex > _input.Length;
 		}
 
-		/// <summary>
-		/// Get the next char to <v>_curChar</v>.
-		/// </summary>
-		private void NextLine()
+        private static void NextLine()
 		{
 			++_curLine;
 			_curCollumn = 0;
 		}
 
-		/// <summary>
-		/// Get the next char to <v>_curChar</v>.
-		/// </summary>
-		private void NextChar()
+        private static void NextChar()
 		{
 			if (_curIndex < _input.Length)
 			{
@@ -270,9 +223,5 @@ namespace BPSLib.Parser.File
 			}
 			++_curIndex;
 		}
-
-		#endregion Private
-
-		#endregion Methods
 	}
 }

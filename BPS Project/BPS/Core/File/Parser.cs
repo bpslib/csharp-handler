@@ -1,4 +1,5 @@
-﻿/*
+﻿/**
+ * 
  * MIT License
  *
  * Copyright (c) 2021 Carlos Eduardo de Borba Machado
@@ -11,91 +12,40 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BPS UnitTest")]
-namespace BPSLib.Parser.File
+namespace BPSLib.Core.File
 {
-	/// <summary>
-	/// Class <c>FileParser</c> manages the file parser.
-	/// </summary>
-	internal class FileParser
+	internal static class Parser
 	{
-		/// <summary>
-		/// Generated BPSFile.
-		/// </summary>
-		internal BPSFile BPSFile { get; }
-
-		/// <summary>
-		/// To parse input.
-		/// </summary>
-		internal string Input { get; private set; }
+		private static readonly Dictionary<string, object> parsedData = new Dictionary<string, object>();
 
 		// control vars
-		private List<Token> _tokens;
-		private Token _curToken;
-		private int _curIndex = -1;
+		private static List<Token> _tokens;
+        private static Token _curToken;
+        private static int _curIndex = -1;
 
-		private string _key;
-		private object _value;
-		private readonly Stack<List<object>> _arrStack = new Stack<List<object>>();
+        private static string _key;
+        private static object _value;
+        private static readonly Stack<List<object>> _arrStack = new Stack<List<object>>();
 
-		private const int CONTEXT_KEY = 0;
-		private const int CONSTEXT_ARRAY = 1;
-		private int _context = CONTEXT_KEY;
+        private const int CONTEXT_KEY = 0;
+        private const int CONSTEXT_ARRAY = 1;
+        private static int _context = CONTEXT_KEY;
 
-		#region Constructors
-
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		internal FileParser()
+		internal static Dictionary<string, object> Parse(string data)
 		{
-			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-
-			BPSFile = new BPSFile();
-			Input = "";
-		}
-
-		/// <summary>
-		/// Constructor setting the input.
-		/// </summary>
-		/// <param name="input">the input to be parsed.</param>
-		internal FileParser(string input)
-		{
-			CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-
-			BPSFile = new BPSFile();
-			Input = input;
-		}
-
-		#endregion Constructors
-
-
-		#region Methods
-
-		#region Public
-
-		/// <summary>
-		/// Do the file parser.
-		/// </summary>
-		internal void Parse()
-		{
-			var lexer = new FileLexer(Input);
-			lexer.Parse();
-			_tokens = lexer.Tokens;
+            _tokens = Lexer.Parse(data);
 			Start();
-		}
+			return parsedData;
+        }
 
-		#endregion Public
-
-		#region Private
-
-		private void Start()
+		private static void Start()
 		{
 			NextToken();
 			Statement();
 			ConsumeToken(TokenCategory.EOF);
 		}
 
-		private void Statement()
+		private static void Statement()
 		{
 			switch (_curToken.Category)
 			{
@@ -107,7 +57,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void Key()
+		private static void Key()
 		{
 			_key = _curToken.Image;
 			NextToken();
@@ -117,7 +67,7 @@ namespace BPSLib.Parser.File
 			Statement();
 		}
 
-		private void Value()
+		private static void Value()
 		{
 			switch (_curToken.Category)
 			{
@@ -153,7 +103,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void Array()
+		private static void Array()
 		{
 			switch (_curToken.Category)
 			{
@@ -195,7 +145,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void ArraySel()
+		private static void ArraySel()
 		{
 			switch (_curToken.Category)
 			{
@@ -216,51 +166,51 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void String()
+		private static void String()
 		{
 			_value = _curToken.Image.Substring(1, _curToken.Image.Length - 2);
 			SetValue();
 		}
 
-		private void Char()
+		private static void Char()
 		{
 			_value = char.Parse(_curToken.Image.Substring(1, _curToken.Image.Length - 2).Replace("\\", string.Empty));
 			SetValue();
 		}
 
-		private void Integer()
+		private static void Integer()
 		{
 			_value = int.Parse(_curToken.Image);
 			SetValue();
 		}
 
-		private void Float()
+		private static void Float()
 		{
 			var strValue = _curToken.Image.EndsWith("f") || _curToken.Image.EndsWith("F") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
 			_value = float.Parse(strValue);
 			SetValue();
 		}
 
-		private void Double()
+		private static void Double()
 		{
 			var strValue = _curToken.Image.EndsWith("d") || _curToken.Image.EndsWith("D") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
 			_value = double.Parse(strValue);
 			SetValue();
 		}
 
-		private void Bool()
+		private static void Bool()
 		{
 			_value = bool.Parse(_curToken.Image);
 			SetValue();
 		}
 
-		private void Null()
+		private static  void Null()
 		{
 			_value = null;
 			SetValue();
 		}
 
-		private void SetValue()
+		private static void SetValue()
 		{
 			if (_context == CONSTEXT_ARRAY)
 			{
@@ -268,12 +218,12 @@ namespace BPSLib.Parser.File
 			}
 			else
 			{
-				BPSFile.Add(_key, _value);
+				parsedData.Add(_key, _value);
 			}
 			NextToken();
 		}
 
-		private void OpenArray()
+		private static void OpenArray()
 		{
 			if (_arrStack.Count == 0)
 			{
@@ -288,7 +238,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void CloseArray()
+		private static void CloseArray()
 		{
 			if (_arrStack.Count > 1)
 			{
@@ -297,13 +247,13 @@ namespace BPSLib.Parser.File
 			else
 			{
 				_context = CONTEXT_KEY;
-				BPSFile.Add(_key, _arrStack.Pop());
+				parsedData.Add(_key, _arrStack.Pop());
 			}
 		}
 
 		// parser controls
 
-		private void NextToken()
+		private static void NextToken()
 		{
 			if (++_curIndex < _tokens.Count)
 			{
@@ -311,7 +261,7 @@ namespace BPSLib.Parser.File
 			}
 		}
 
-		private void ConsumeToken(TokenCategory category)
+		private static void ConsumeToken(TokenCategory category)
 		{
 			if (!_curToken.Category.Equals(category))
 			{
@@ -319,10 +269,6 @@ namespace BPSLib.Parser.File
 			}
 			NextToken();
 		}
-
-		#endregion Private
-
-		#endregion Methods
 
 	}
 }
