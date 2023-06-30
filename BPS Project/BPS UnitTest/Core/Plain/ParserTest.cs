@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace BPS_UnitTest.Parser.Plain
 {
 	[TestClass]
-	public class PlainParserTest
+	public class ParserTest
 	{
 		[TestMethod]
 		public void ParseTest()

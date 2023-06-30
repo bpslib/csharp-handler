@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BPSLib.Parser.File;
+using BPSLib.Core.File;
 using System.Collections.Generic;
 
-namespace BPS_UnitTest.Parser.File
+namespace BPS_UnitTest.Core.File
 {
 	[TestClass]
-	public class FileLexerTest
+	public class LexerTest
 	{
 		[TestMethod]
 		public void ParseTest()
