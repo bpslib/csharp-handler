@@ -6,6 +6,7 @@
  *
  */
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -39,20 +40,19 @@ namespace BPSLib.Core.Plain
                 plainStringBuilder.Append("null");
 			}
 			// value is an array
-			else if (value.GetType().Equals(typeof(List<object>)))
-			{
+			else if (value.GetType().IsArray)
+            {
                 plainStringBuilder.Append("[");
-                ParseArray((List<object>)value);
+                ParseArray((Array)value);
                 plainStringBuilder.Append("]");
-			}
-			// it's a normal value
-			else
+            }
+            // it's a normal value
+            else
 			{
 				if (value.GetType().Equals(typeof(string)))
 				{
 					plainStringBuilder.Append("\"");
-					// todo: parse double quotes
-					plainStringBuilder.Append((string)value);
+					plainStringBuilder.Append(((string)value).Replace("\"", "\\\""));
                     plainStringBuilder.Append("\"");
 				}
 				else if (value.GetType().Equals(typeof(char)))
@@ -66,15 +66,25 @@ namespace BPSLib.Core.Plain
 				else if (value.GetType().Equals(typeof(bool)))
 				{
                     plainStringBuilder.Append(value.ToString().ToLower());
-				}
-				else
+                }
+                else if (value.GetType().Equals(typeof(float)))
+                {
+                    plainStringBuilder.Append(value.ToString().ToLower());
+                    plainStringBuilder.Append('f');
+                }
+                else if (value.GetType().Equals(typeof(double)))
+                {
+                    plainStringBuilder.Append(value.ToString().ToLower());
+                    plainStringBuilder.Append('d');
+                }
+                else
 				{
 					plainStringBuilder.Append(value);
 				}
 			}
         }
 
-		private static void ParseArray(List<object> arr)
+		private static void ParseArray(Array arr)
 		{
 			// loops each value in array
 			foreach (var v in arr)
@@ -84,7 +94,7 @@ namespace BPSLib.Core.Plain
                 plainStringBuilder.Append(",");
 			}
 			// prevents to remove "[" when no data
-			if (arr.Count > 0)
+			if (arr.Length > 0)
 			{
                 plainStringBuilder.Remove(plainStringBuilder.Length - 1, 1);
 			}

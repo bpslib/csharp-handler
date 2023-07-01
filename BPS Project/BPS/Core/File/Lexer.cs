@@ -125,6 +125,10 @@ namespace BPSLib.Core.File
 						lexeme += _curChar;
 						NextChar();
 					}
+					if (!_curChar.Equals(Symbols.DQUOTE))
+					{
+                        throw new Exception("String was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
+                    }
 					lexeme += _curChar;
 					tokens.Add(new Token(TokenCategory.STRING, lexeme, _curLine, initCol));
 					NextChar();
@@ -173,19 +177,19 @@ namespace BPSLib.Core.File
 						lexeme += _curChar;
 						NextChar();
 					}
-					if (_curChar.Equals('f') || _curChar.Equals('F') || _curChar.Equals('d') || _curChar.Equals('D'))
+					if (char.ToLower(_curChar).Equals('f') || char.ToLower(_curChar).Equals('d'))
 					{
 						lexeme += _curChar;
 						NextChar();
 					}
 					// float, double or int
-					if (lexeme.Contains("d") || _curChar.Equals('D'))
-					{
-						tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
+					if (lexeme.ToLower().Contains("f"))
+                    {
+                        tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
 					}
-					else if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.Contains("f") || _curChar.Equals('F'))
+					else if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.ToLower().Contains("d"))
 					{
-						tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
+                        tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
 					}
 					else
 					{

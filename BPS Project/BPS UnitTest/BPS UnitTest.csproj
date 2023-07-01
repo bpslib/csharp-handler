@@ -49,12 +49,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser\File\FileLexerTest.cs" />
-    <Compile Include="BPSFileTest.cs" />
-    <Compile Include="Parser\File\FileParserTest.cs" />
-    <Compile Include="Parser\Plain\PlainParserTest.cs" />
+    <Compile Include="Core\File\LexerTest.cs" />
+    <Compile Include="BPSTest.cs" />
+    <Compile Include="Core\File\ParserTest.cs" />
+    <Compile Include="Core\Plain\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\BPSPathTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
