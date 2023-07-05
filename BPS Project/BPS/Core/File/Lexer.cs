@@ -22,7 +22,7 @@ namespace BPSLib.Core.File
         private static char _curChar;
         private static int _curIndex = 0;
         private static int _curLine = 1;
-        private static int _curCollumn = 0;
+        private static int _curCollumn = 1;
 
 		internal static List<Token> Parse(string input)
 		{

@@ -11,7 +11,9 @@ namespace Tester
 	{
 		static void Main()
 		{
-            TestLoadAndSave();
+            //TestLoadAndSave();
+            //TestErrorParse();
+            TestPlain();
         }
 
         private static void TestErrorParse()
