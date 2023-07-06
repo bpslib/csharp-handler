@@ -14,7 +14,7 @@ namespace BPSLib
     /// <summary>
     /// Class <c>BPS</c>.
     /// </summary>
-    public class BPS
+    public static class BPS
 	{
 		static BPS()
         {

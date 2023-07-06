@@ -143,6 +143,10 @@ namespace BPSLib.Core.File
 					{
 						lexeme += _curChar;
 						NextChar();
+						if (!_curChar.Equals(Symbols.QUOTE))
+                        {
+                            throw new Exception("Unexpected char at line " + _curLine + " and collumn " + _curCollumn + ".");
+                        }
 					}
 					lexeme += _curChar;
 					NextChar();
