@@ -33,7 +33,7 @@ namespace BPSLib.Core.File
 
 		internal static Dictionary<string, object> Parse(string data)
 		{
-            _tokens = Lexer.Parse(data);
+            _tokens = Lexer.Tokenize(data);
 			Start();
 			return parsedData;
         }

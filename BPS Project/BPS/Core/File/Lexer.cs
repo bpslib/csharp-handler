@@ -24,7 +24,7 @@ namespace BPSLib.Core.File
         private static int _curLine = 1;
         private static int _curCollumn = 1;
 
-		internal static List<Token> Parse(string input)
+		internal static List<Token> Tokenize(string input)
 		{
 			_input = input;
 
