@@ -28,7 +28,7 @@ namespace BPSLib.Core.File
         private static readonly Stack<List<object>> _arrStack = new Stack<List<object>>();
 
         private const int CONTEXT_KEY = 0;
-        private const int CONSTEXT_ARRAY = 1;
+        private const int CONTEXT_ARRAY = 1;
         private static int _context = CONTEXT_KEY;
 
 		internal static Dictionary<string, object> Parse(string data)
@@ -212,7 +212,7 @@ namespace BPSLib.Core.File
 
 		private static void SetValue()
 		{
-			if (_context == CONSTEXT_ARRAY)
+			if (_context == CONTEXT_ARRAY)
 			{
 				_arrStack.Peek().Add(_value);
 			}
@@ -227,7 +227,7 @@ namespace BPSLib.Core.File
 		{
 			if (_arrStack.Count == 0)
 			{
-				_context = CONSTEXT_ARRAY;
+				_context = CONTEXT_ARRAY;
 				_arrStack.Push(new List<object>());
 			}
 			else

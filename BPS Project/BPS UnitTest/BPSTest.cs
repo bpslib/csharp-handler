@@ -14,7 +14,9 @@ namespace BPS_UnitTest
         readonly string strBpsData =
             "key1:\"value\";\r\n" +
             "key2:\"\\\"value\\\"\";\r\n" +
-            "key3:'v';\r\nkey4:'\\'';\r\n" +
+            "key3:'v';\r\n" +
+            "key4:'\\'';\r\n" +
+            "key23:'\\';\r\n" +
             "key5:10f;\r\n" +
             "key6:-99f;\r\n" +
             "key7:99.666f;\r\n" +
