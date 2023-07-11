@@ -121,9 +121,12 @@ namespace BPSLib.Core.File
 					NextChar();
 					while (!EndOfInput() && (!_curChar.Equals(Symbols.DQUOTE) || beforeChar.Equals('\\')))
 					{
-						beforeChar = _curChar;
-						lexeme += _curChar;
-						NextChar();
+						if (!_curChar.Equals('\\') || beforeChar.Equals('\\'))
+                        {
+                            lexeme += _curChar;
+                        }
+                        beforeChar = _curChar;
+                        NextChar();
 					}
 					if (!_curChar.Equals(Symbols.DQUOTE))
 					{
@@ -143,14 +146,10 @@ namespace BPSLib.Core.File
 					{
 						lexeme += _curChar;
 						NextChar();
-						if (!_curChar.Equals(Symbols.QUOTE))
-                        {
-                            throw new Exception("Unexpected char at line " + _curLine + " and collumn " + _curCollumn + ".");
-                        }
-					}
-					lexeme += _curChar;
-					NextChar();
-					if (!_curChar.Equals(Symbols.QUOTE))
+                    }
+                    lexeme += _curChar;
+                    NextChar();
+                    if (!_curChar.Equals(Symbols.QUOTE))
 					{
 						throw new Exception("Char was not closed at line " + _curLine + " and collumn " + _curCollumn + ".");
 					}

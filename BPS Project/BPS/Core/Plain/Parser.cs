@@ -16,10 +16,17 @@ namespace BPSLib.Core.Plain
 {
     internal static class Parser
     {
-		private static readonly StringBuilder plainStringBuilder = new StringBuilder();
+		private static StringBuilder plainStringBuilder;
+
+        private static void InitParser()
+        {
+            plainStringBuilder = new StringBuilder();
+        }
 
 		internal static string Parse(Dictionary<string, object> data)
 		{
+            InitParser();
+
             // loops bps file adding each key-value to output
             foreach (var d in data)
             {
@@ -52,7 +59,7 @@ namespace BPSLib.Core.Plain
 				if (value.GetType().Equals(typeof(string)))
 				{
 					plainStringBuilder.Append("\"");
-					plainStringBuilder.Append(((string)value).Replace("\"", "\\\""));
+                    plainStringBuilder.Append(((string)value).Replace("\"", "\\\""));
                     plainStringBuilder.Append("\"");
 				}
 				else if (value.GetType().Equals(typeof(char)))
