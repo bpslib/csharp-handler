@@ -18,14 +18,14 @@ namespace BPSLib.Core.Plain
     {
 		private static StringBuilder plainStringBuilder;
 
-        private static void InitParser()
+        private static void Init()
         {
             plainStringBuilder = new StringBuilder();
         }
 
 		internal static string Parse(Dictionary<string, object> data)
 		{
-            InitParser();
+            Init();
 
             // loops bps file adding each key-value to output
             foreach (var d in data)

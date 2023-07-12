@@ -30,21 +30,17 @@ namespace BPSLib.Core.File
         private const int CONTEXT_ARRAY = 1;
         private static int _context;
 
-        private static void InitParser()
+        private static void Init()
         {
             parsedData = new Dictionary<string, object>();
-            _tokens = new List<Token>();
-            _curToken = null;
             _curIndex = -1;
-            _key = string.Empty;
-            _value = null;
             _arrStack = new Stack<List<object>>();
             _context = CONTEXT_KEY;
         }
 
         internal static Dictionary<string, object> Parse(string data)
         {
-            InitParser();
+            Init();
             _tokens = Lexer.Tokenize(data);
             Start();
             return parsedData;

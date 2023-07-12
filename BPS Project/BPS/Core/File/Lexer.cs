@@ -15,18 +15,27 @@ namespace BPSLib.Core.File
 {
 	internal static class Lexer
 	{
-		private static readonly List<Token> tokens = new List<Token>();
+		private static List<Token> tokens;
 
         // control vars
-        private static string _input = "";
+        private static string _input;
         private static char _curChar;
-        private static int _curIndex = 0;
-        private static int _curLine = 1;
-        private static int _curCollumn = 1;
+        private static int _curIndex;
+        private static int _curLine;
+        private static int _curCollumn;
+
+		private static void Init()
+        {
+			tokens = new List<Token>();
+			_curIndex = 0;
+			_curLine = 1;
+			_curCollumn = 1;
+		}
 
 		internal static List<Token> Tokenize(string input)
 		{
-			_input = input;
+			Init();
+            _input = input;
 
 			NextChar();
 			while (!EndOfInput())
