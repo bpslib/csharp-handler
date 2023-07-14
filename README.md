@@ -21,7 +21,7 @@ public void Foo()
 {
     string bpsNotationData = "bar:255;";
 
-    // Parsing a string in a BPSFile
+    // Parsing a string in a Dictionary<string, object>
     Dictionary<string, object> file = BPS.Parse(bpsNotationData);
     
     // Writing in the console a string representation of a Dictionary<string, object>
