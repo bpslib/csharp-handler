@@ -14,17 +14,17 @@ The documentation of BPS and this handler can be found [here](https://bps-lib.gi
 
 #### Parsing operations
 
-The `BPS` class has two methods to transform data. The method `Parse()` will parse a string containing data in BPS notation. The method `Plain()` will parse a `BPSFile` in a string containing the data in BPS notation.
+The `BPS` class has two methods to transform data. The method `Parse()` will parse a string containing data in BPS notation. The method `Plain()` will parse a `Dictionary<string, object>` in a string containing the data in BPS notation.
 
 ```csharp
 public void Foo()
 {
-    string bpsNotationData = "intValue:256;";
+    string bpsNotationData = "bar:255;";
 
     // Parsing a string in a BPSFile
-    BPSFile file = BPS.Parse(bpsNotationData);
+    Dictionary<string, object> file = BPS.Parse(bpsNotationData);
     
-    // Writing in the console a string representation of a BPSFile
+    // Writing in the console a string representation of a Dictionary<string, object>
     Console.WriteLine(BPS.Plain(file));
 }
 ```
