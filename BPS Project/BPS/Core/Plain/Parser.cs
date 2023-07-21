@@ -74,15 +74,10 @@ namespace BPSLib.Core.Plain
 				{
                     plainStringBuilder.Append(value.ToString().ToLower());
                 }
-                else if (value.GetType().Equals(typeof(float)))
+                else if (value.GetType().Equals(typeof(float)) || value.GetType().Equals(typeof(double)) || value.GetType().Equals(typeof(decimal)))
                 {
                     plainStringBuilder.Append(value.ToString().ToLower());
                     plainStringBuilder.Append('f');
-                }
-                else if (value.GetType().Equals(typeof(double)))
-                {
-                    plainStringBuilder.Append(value.ToString().ToLower());
-                    plainStringBuilder.Append('d');
                 }
                 else
 				{
