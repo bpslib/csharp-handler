@@ -12,15 +12,15 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 [assembly: InternalsVisibleTo("BPS UnitTest")]
-namespace BPSLib.Core.Plain
+namespace BPSLib.Core
 {
-    internal static class Parser
+    internal static class Plain
     {
-		private static StringBuilder plainStringBuilder;
+		private static StringBuilder _plainStringBuilder;
 
         private static void Init()
         {
-            plainStringBuilder = new StringBuilder();
+            _plainStringBuilder = new StringBuilder();
         }
 
 		internal static string Parse(Dictionary<string, object> data)
@@ -30,13 +30,13 @@ namespace BPSLib.Core.Plain
             // loops bps file adding each key-value to output
             foreach (var d in data)
             {
-                plainStringBuilder.Append(d.Key);
-                plainStringBuilder.Append(":");
+                _plainStringBuilder.Append(d.Key);
+                _plainStringBuilder.Append(":");
                 ParseValue(d.Value);
-                plainStringBuilder.AppendLine(";");
+                _plainStringBuilder.AppendLine(";");
             }
 
-            return plainStringBuilder.ToString();
+            return _plainStringBuilder.ToString();
 		}
 
 		private static void ParseValue(object value)
@@ -44,43 +44,43 @@ namespace BPSLib.Core.Plain
             // null values
             if (value == null)
 			{
-                plainStringBuilder.Append("null");
+                _plainStringBuilder.Append("null");
 			}
 			// value is an array
 			else if (value.GetType().IsArray)
             {
-                plainStringBuilder.Append("[");
+                _plainStringBuilder.Append("[");
                 ParseArray((Array)value);
-                plainStringBuilder.Append("]");
+                _plainStringBuilder.Append("]");
             }
             // it's a normal value
             else
 			{
 				if (value.GetType().Equals(typeof(string)))
 				{
-					plainStringBuilder.Append("\"");
-                    plainStringBuilder.Append(((string)value).Replace("\"", "\\\""));
-                    plainStringBuilder.Append("\"");
+					_plainStringBuilder.Append("\"");
+                    _plainStringBuilder.Append(((string)value).Replace("\"", "\\\""));
+                    _plainStringBuilder.Append("\"");
 				}
 				else if (value.GetType().Equals(typeof(char)))
 				{
 					var c = (char)value;
-                    plainStringBuilder.Append("'");
-					plainStringBuilder.Append(c.Equals('\'') ? "\\" : "");
-					plainStringBuilder.Append(c);
-                    plainStringBuilder.Append("'");
+                    _plainStringBuilder.Append("'");
+					_plainStringBuilder.Append(c.Equals('\'') ? "\\" : "");
+					_plainStringBuilder.Append(c);
+                    _plainStringBuilder.Append("'");
                 }
 				else if (value.GetType().Equals(typeof(bool)))
 				{
-                    plainStringBuilder.Append(value.ToString().ToLower());
+                    _plainStringBuilder.Append(value.ToString().ToLower());
                 }
                 else if (value.GetType().Equals(typeof(float)) || value.GetType().Equals(typeof(double)) || value.GetType().Equals(typeof(decimal)))
                 {
-                    plainStringBuilder.Append(value.ToString().ToLower());
+                    _plainStringBuilder.Append(value.ToString().ToLower());
                 }
                 else
 				{
-					plainStringBuilder.Append(value);
+					_plainStringBuilder.Append(value);
 				}
 			}
         }
@@ -92,12 +92,12 @@ namespace BPSLib.Core.Plain
 			{
                 // parses a value recursively
                 ParseValue(v);
-                plainStringBuilder.Append(",");
+                _plainStringBuilder.Append(",");
 			}
 			// prevents to remove "[" when no data
 			if (arr.Length > 0)
 			{
-                plainStringBuilder.Remove(plainStringBuilder.Length - 1, 1);
+                _plainStringBuilder.Remove(_plainStringBuilder.Length - 1, 1);
 			}
 		}
 

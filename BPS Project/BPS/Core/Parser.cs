@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BPS UnitTest")]
-namespace BPSLib.Core.File
+namespace BPSLib.Core
 {
     internal static class Parser
     {
-        private static Dictionary<string, object> parsedData;
+        private static Dictionary<string, object> _parsedData;
 
         // control vars
         private static List<Token> _tokens;
@@ -32,7 +32,7 @@ namespace BPSLib.Core.File
 
         private static void Init()
         {
-            parsedData = new Dictionary<string, object>();
+            _parsedData = new Dictionary<string, object>();
             _curIndex = -1;
             _arrStack = new Stack<List<object>>();
             _context = CONTEXT_KEY;
@@ -43,7 +43,7 @@ namespace BPSLib.Core.File
             Init();
             _tokens = Lexer.Tokenize(data);
             Start();
-            return parsedData;
+            return _parsedData;
         }
 
         private static void Start()
@@ -185,7 +185,7 @@ namespace BPSLib.Core.File
             }
             else
             {
-                parsedData.Add(_key, _value);
+                _parsedData.Add(_key, _value);
             }
             NextToken();
         }
@@ -232,7 +232,7 @@ namespace BPSLib.Core.File
             {
                 _context = CONTEXT_KEY;
                 var array = ParseArrayRecursively(_arrStack.Pop());
-                parsedData.Add(_key, array);
+                _parsedData.Add(_key, array);
             }
         }
 

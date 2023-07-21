@@ -8,6 +8,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using BPSLib.Core;
 
 namespace BPSLib
 {
@@ -28,7 +29,7 @@ namespace BPSLib
         /// <returns>BPS file representation from data.</returns>
         public static Dictionary<string, object> Parse(string data)
 		{
-            var parsedData = Core.File.Parser.Parse(data);
+            var parsedData = Parser.Parse(data);
             return parsedData;
 		}
 
@@ -39,7 +40,7 @@ namespace BPSLib
         /// <returns>A String representation from data.</returns>
         public static string Plain(Dictionary<string, object> data)
 		{
-			return Core.Plain.Parser.Parse(data);
+			return Core.Plain.Parse(data);
 		}
 	}
 }
