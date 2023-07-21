@@ -96,7 +96,7 @@ namespace Tester
             "key3:'v';\r\n" +
             "key4:'\\'';\r\n" +
             "key23:'\\\\';\r\n" +
-            "key11:10;\r\n" +
+            "key24:10;\r\n" +
             "key5:10f;\r\n" +
             "key6:-99f;\r\n" +
             "key7:99.666f;\r\n" +
@@ -122,7 +122,7 @@ namespace Tester
                 { "key2", "\"value\"" },
                 { "key3", 'v' },
                 { "key4", '\'' },
-                { "key11", 10 },
+                { "key23", 10 },
                 { "key5", 10f },
                 { "key6", -99f },
                 { "key7", 99.666f },

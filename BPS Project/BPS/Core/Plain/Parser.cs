@@ -77,7 +77,6 @@ namespace BPSLib.Core.Plain
                 else if (value.GetType().Equals(typeof(float)) || value.GetType().Equals(typeof(double)) || value.GetType().Equals(typeof(decimal)))
                 {
                     plainStringBuilder.Append(value.ToString().ToLower());
-                    plainStringBuilder.Append('f');
                 }
                 else
 				{
