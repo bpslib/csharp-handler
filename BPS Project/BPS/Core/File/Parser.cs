@@ -94,9 +94,6 @@ namespace BPSLib.Core.File
                 case TokenCategory.FLOAT:
                     Float();
                     break;
-                case TokenCategory.DOUBLE:
-                    Double();
-                    break;
                 case TokenCategory.BOOL:
                     Bool();
                     break;
@@ -157,21 +154,14 @@ namespace BPSLib.Core.File
 
         private static void Integer()
         {
-            _value = int.Parse(_curToken.Image);
+            _value = long.Parse(_curToken.Image);
             SetValue();
         }
 
         private static void Float()
         {
             var strValue = _curToken.Image.EndsWith("f") || _curToken.Image.EndsWith("F") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
-            _value = float.Parse(strValue);
-            SetValue();
-        }
-
-        private static void Double()
-        {
-            var strValue = _curToken.Image.EndsWith("d") || _curToken.Image.EndsWith("D") ? _curToken.Image.Substring(0, _curToken.Image.Length - 1) : _curToken.Image;
-            _value = double.Parse(strValue);
+            _value = decimal.Parse(strValue);
             SetValue();
         }
 

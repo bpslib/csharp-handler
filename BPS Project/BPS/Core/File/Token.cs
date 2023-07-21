@@ -6,11 +6,9 @@
  *
  */
 
-using System.Collections.Generic;
-
 namespace BPSLib.Core.File
 {
-	internal class Token
+    internal class Token
 	{
 		internal TokenCategory Category { get; }
 

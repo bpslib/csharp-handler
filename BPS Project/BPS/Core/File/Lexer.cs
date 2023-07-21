@@ -189,19 +189,15 @@ namespace BPSLib.Core.File
 						lexeme += _curChar;
 						NextChar();
 					}
-					if (char.ToLower(_curChar).Equals('f') || char.ToLower(_curChar).Equals('d'))
+					if (char.ToLower(_curChar).Equals('f'))
 					{
 						lexeme += _curChar;
 						NextChar();
 					}
-					// float, double or int
-					if (lexeme.ToLower().Contains("f"))
+					// float or int
+					if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.ToLower().Contains("f"))
                     {
                         tokens.Add(new Token(TokenCategory.FLOAT, lexeme, _curLine, initCol));
-					}
-					else if (lexeme.Contains(Symbols.DOT.ToString()) || lexeme.ToLower().Contains("d"))
-					{
-                        tokens.Add(new Token(TokenCategory.DOUBLE, lexeme, _curLine, initCol));
 					}
 					else
 					{
